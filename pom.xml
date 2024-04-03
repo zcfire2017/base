@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+		 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>com.base</groupId>
+	<artifactId>base</artifactId>
+	<version>${revision}</version>
+	<packaging>pom</packaging>
+
+	<modules>
+		<module>kafka</module>
+		<module>tools</module>
+		<module>mysql</module>
+		<module>redis</module>
+		<module>cloud-file</module>
+	</modules>
+
+	<properties>
+		<revision>1.0.0</revision>
+		<source.version>17</source.version>
+		<target.version>17</target.version>
+		<encoding>UTF-8</encoding>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<manifold.version>2024.1.10</manifold.version>
+		<lombok.version>1.18.30</lombok.version>
+		<spring.version>6.1.5</spring.version>
+		<spring.boot.version>3.2.3</spring.boot.version>
+		<maven-jar-plugin.version>3.3.0</maven-jar-plugin.version>
+		<maven-dependency-plugin.version>3.6.0</maven-dependency-plugin.version>
+		<maven-resources-plugin.version>3.3.1</maven-resources-plugin.version>
+		<slf4j.version>2.0.12</slf4j.version>
+	</properties>
+
+	<distributionManagement>
+		<repository>
+			<!-- 此处的id要和settings.xml中repository的id保持一致 -->
+			<id>maven-releases</id>
+			<name>本地仓库</name>
+			<url>http://192.168.41.38:28081/repository/maven-releases/</url>
+		</repository>
+	</distributionManagement>
+
+	<build>
+		<plugins>
+			<!-- 编译插件 -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.12.1</version>
+				<configuration>
+					<source>${source.version}</source>
+					<target>${target.version}</target>
+					<encoding>${encoding}</encoding>
+					<skip>true</skip>
+					<compilerArgs>
+						<!-- Configure manifold plugin-->
+						<arg>-Xplugin:Manifold no-bootstrap</arg>
+						<arg>-implicit:class</arg>
+						<arg>-parameters</arg>
+					</compilerArgs>
+					<!-- Add the processor path for the plugin -->
+					<annotationProcessorPaths>
+						<path>
+							<!-- 扩展属性和属性简洁开发 -->
+							<groupId>systems.manifold</groupId>
+							<artifactId>manifold-props</artifactId>
+							<version>${manifold.version}</version>
+						</path>
+						<path>
+							<!-- 内嵌字符串 -->
+							<groupId>systems.manifold</groupId>
+							<artifactId>manifold-strings</artifactId>
+							<version>${manifold.version}</version>
+						</path>
+						<path>
+							<!-- 元组 -->
+							<groupId>systems.manifold</groupId>
+							<artifactId>manifold-tuple</artifactId>
+							<version>${manifold.version}</version>
+						</path>
+						<path>
+							<!-- 支持注解 -->
+							<groupId>org.projectlombok</groupId>
+							<artifactId>lombok</artifactId>
+							<version>${lombok.version}</version>
+						</path>
+					</annotationProcessorPaths>
+				</configuration>
+			</plugin>
+			<!-- 资源管理 -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-resources-plugin</artifactId>
+				<version>3.3.1</version>
+			</plugin>
+			<!-- 版本号管理 -->
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>flatten-maven-plugin</artifactId>
+				<version>1.6.0</version>
+				<inherited>true</inherited>
+				<executions>
+					<execution>
+						<id>flatten</id>
+						<phase>process-resources</phase>
+						<goals>
+							<goal>flatten</goal>
+						</goals>
+						<configuration>
+							<!-- 避免IDE将 .flattened-pom.xml 自动识别为功能模块 -->
+							<updatePomFile>true</updatePomFile>
+							<flattenMode>resolveCiFriendliesOnly</flattenMode>
+							<pomElements>
+								<parent>expand</parent>
+								<distributionManagement>remove</distributionManagement>
+								<repositories>remove</repositories>
+							</pomElements>
+						</configuration>
+					</execution>
+					<execution>
+						<id>flatten.clean</id>
+						<phase>clean</phase>
+						<goals>
+							<goal>clean</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+</project>
