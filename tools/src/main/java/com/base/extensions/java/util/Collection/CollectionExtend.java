@@ -226,6 +226,41 @@ public class CollectionExtend {
 	 * @param collection 集合对象
 	 * @param <E>        集合实体对象
 	 * @param predicate  过滤条件
+	 * @param mapper     生成返回对象
+	 * @param <R>        返回实体对象
+	 * @return 第一个对象
+	 */
+	public static <E, R> R first(@This Collection<E> collection, Predicate<E> predicate, Function<E, R> mapper) {
+		if (collection.isEmpty()) {
+			return null;
+		}
+		return create(collection).where(predicate).select(mapper).first();
+	}
+
+	/**
+	 * 返回第一个对象
+	 *
+	 * @param collection   集合对象
+	 * @param <E>          集合实体对象
+	 * @param predicate    过滤条件
+	 * @param mapper       生成返回对象
+	 * @param <R>          返回实体对象
+	 * @param defaultValue 默认值
+	 * @return 第一个对象
+	 */
+	public static <E, R> R first(@This Collection<E> collection, Predicate<E> predicate, Function<E, R> mapper, R defaultValue) {
+		if (collection.isEmpty()) {
+			return null;
+		}
+		return create(collection).where(predicate).select(mapper).first(defaultValue);
+	}
+
+	/**
+	 * 返回第一个对象
+	 *
+	 * @param collection 集合对象
+	 * @param <E>        集合实体对象
+	 * @param predicate  过滤条件
 	 * @return 第一个对象
 	 */
 	public static <E> E first(@This Collection<E> collection, Predicate<E> predicate) {
@@ -270,6 +305,37 @@ public class CollectionExtend {
 	}
 
 	/**
+	 * 返回List集合
+	 *
+	 * @param collection 集合对象
+	 * @param <E>        集合实体对象
+	 * @param predicate  筛选条件
+	 * @param mapper     生成返回对象
+	 * @param <R>        返回实体对象
+	 * @return List集合
+	 */
+	public static <E, R> List<R> toList(@This Collection<E> collection, Predicate<E> predicate, Function<E, R> mapper) {
+		if (collection.isEmpty()) {
+			return new ArrayList<>();
+		}
+		return create(collection).where(predicate).select(mapper).toList();
+	}
+
+	/**
+	 * 返回Set集合
+	 *
+	 * @param collection 集合对象
+	 * @param <E>        集合实体对象
+	 * @return Set集合
+	 */
+	public static <E> Set<E> toSet(@This Collection<E> collection) {
+		if (collection.isEmpty()) {
+			return new HashSet<>();
+		}
+		return new HashSet<>(collection);
+	}
+
+	/**
 	 * 返回Set集合
 	 *
 	 * @param collection 集合对象
@@ -289,13 +355,16 @@ public class CollectionExtend {
 	 *
 	 * @param collection 集合对象
 	 * @param <E>        集合实体对象
+	 * @param predicate  筛选条件
+	 * @param mapper     生成返回对象
+	 * @param <R>        返回实体对象
 	 * @return Set集合
 	 */
-	public static <E> Set<E> toSet(@This Collection<E> collection) {
+	public static <E, R> Set<R> toSet(@This Collection<E> collection, Predicate<E> predicate, Function<E, R> mapper) {
 		if (collection.isEmpty()) {
 			return new HashSet<>();
 		}
-		return new HashSet<>(collection);
+		return create(collection).where(predicate).select(mapper).toSet();
 	}
 
 	/**

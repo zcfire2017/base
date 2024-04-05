@@ -13,21 +13,7 @@ import java.util.List;
 @Extension
 public class ListExtend {
 	/**
-	 * 初始化
-	 *
-	 * @param theClass List对象
-	 * @param value    值
-	 * @param <E>      值类型
-	 * @return ArrayList对象
-	 */
-	public static @Self <E> List<E> init(@ThisClass Class<List<E>> theClass, E value) {
-		var list = new ArrayList<E>();
-		list.add(value);
-		return list;
-	}
-
-	/**
-	 * 初始化
+	 * 初始化可变集合
 	 *
 	 * @param theClass List对象
 	 * @param value    值
@@ -35,7 +21,7 @@ public class ListExtend {
 	 * @return ArrayList对象
 	 */
 	@SafeVarargs
-	public static @Self <E> List<E> init(@ThisClass Class<List<E>> theClass, E... value) {
+	public static @Self <E> List<E> on(@ThisClass Class<List<E>> theClass, E... value) {
 		var list = new ArrayList<E>(value.length);
 		for (var i = 0; i < value.length; i++) {
 			list.add(i, value[i]);

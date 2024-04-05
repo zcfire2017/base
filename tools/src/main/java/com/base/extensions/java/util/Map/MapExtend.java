@@ -4,15 +4,17 @@ import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.convert.Convert;
 import cn.hutool.core.lang.TypeReference;
 import com.base.entity.key_value.KeyValue;
+import com.base.tools.linq.ZLinq;
 import manifold.ext.rt.api.Extension;
 import manifold.ext.rt.api.This;
 import manifold.ext.rt.api.ThisClass;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.function.Function;
+import java.util.function.Predicate;
+
+import static com.base.tools.linq.ZLinq.create;
 
 /**
  * Map扩展
@@ -22,7 +24,7 @@ public class MapExtend {
 	//region 类方法扩展
 
 	/**
-	 * 初始化
+	 * 初始化可变Map
 	 *
 	 * @param theClass Map对象
 	 * @param key      键
@@ -31,14 +33,22 @@ public class MapExtend {
 	 * @param <V>      值类型
 	 * @return HashMap对象
 	 */
-	public static <K, V> HashMap<K, V> init(@ThisClass Class<Map<K, V>> theClass, K key, V value) {
+	public static <K, V> HashMap<K, V> on(@ThisClass Class<Map<K, V>> theClass, K key, V value) {
 		var map = new HashMap<K, V>();
 		map.put(key, value);
 		return map;
 	}
 
 	/**
-	 * 初始化
+	 * 初始化可变Map
+	 * <p>你可以这样使用</p>
+	 * <pre> {@code
+	 * import static com.base.extensions.java.util.Map.MapUnit.kv;
+	 *
+	 * var map1 = Map.on("key" kv "value", "key" kv "value");
+	 * var map2 = Map.on(1 kv 2, 3 kv 4);
+	 * var map23 = Map.on("key" kv 1, "key" kv 2);
+	 * }</pre>
 	 *
 	 * @param theClass Map对象
 	 * @param keyValue 值
@@ -47,7 +57,7 @@ public class MapExtend {
 	 * @return HashMap对象
 	 */
 	@SafeVarargs
-	public static <K, V> HashMap<K, V> init(@ThisClass Class<Map<K, V>> theClass, KeyValue<K, V>... keyValue) {
+	public static <K, V> HashMap<K, V> on(@ThisClass Class<Map<K, V>> theClass, KeyValue<K, V>... keyValue) {
 		var map = new HashMap<K, V>();
 		for (var item : keyValue) {
 			map.put(item.getKey(), item.getValue());
@@ -118,6 +128,18 @@ public class MapExtend {
 	//endregion
 
 	//region 普通获取值
+
+	/**
+	 * 获取map的值并转换为指定类型数据
+	 *
+	 * @param map 键值对集合
+	 * @param <K> 键类型
+	 * @param <V> 值类型
+	 * @return 返回值
+	 */
+	public static <K, V> Map.Entry<K, V> get(@This Map<K, V> map, int index) {
+		return map.entrySet().first();
+	}
 
 	/**
 	 * 获取map的值并转换为指定类型数据
@@ -412,6 +434,75 @@ public class MapExtend {
 			return (List<Map<String, Object>>) back;
 		}
 		return new ArrayList<>();
+	}
+
+	//endregion
+
+	//region 集合操作
+
+	/**
+	 * 选择返回对象
+	 *
+	 * @param map       键值对对象
+	 * @param predicate 条件选择
+	 * @param <K>       键类型
+	 * @param <V>       值类型
+	 * @return 集合操作对象
+	 */
+	public static <K, V> ZLinq<Map.Entry<K, V>> where(@This Map<K, V> map, Predicate<Map.Entry<K, V>> predicate) {
+		return create(map.entrySet()).where(predicate);
+	}
+
+	/**
+	 * 选择返回对象
+	 *
+	 * @param map    键值对对象
+	 * @param mapper 选择对象
+	 * @param <K>    键类型
+	 * @param <V>    值类型
+	 * @param <R>    返回值类型
+	 * @return 集合操作对象
+	 */
+	public static <K, V, R> ZLinq<R> select(@This Map<K, V> map, Function<Map.Entry<K, V>, R> mapper) {
+		return create(map.entrySet()).select(mapper);
+	}
+
+	/**
+	 * 选择返回对象（泛型对象为集合）
+	 * <p>因为要泛型擦除，所以要把类传进来，垃圾java</p>
+	 *
+	 * @param map      键值对对象
+	 * @param theClass 集合对象
+	 * @param mapper   选择对象
+	 * @param <K>      键类型
+	 * @param <V>      值类型
+	 * @param <R>      返回值类型
+	 * @return 集合操作对象
+	 */
+	public static <K, V extends Collection<T>, T, R> ZLinq<R> selectMany(@This Map<K, V> map, Class<T> theClass, Function<T, R> mapper) {
+		//合并集合
+		var list = new ArrayList<T>();
+		for (var item : map.values()) {
+			list.addAll(item);
+		}
+		return create(list).select(mapper);
+	}
+
+	/**
+	 * 选择返回对象（泛型对象为集合）
+	 *
+	 * @param map 键值对对象
+	 * @param <K> 键类型
+	 * @param <V> 值类型
+	 * @return 集合操作对象
+	 */
+	public static <K, V extends Collection<T>, T> List<T> selectMany(@This Map<K, V> map) {
+		//合并集合
+		var list = new ArrayList<T>();
+		for (var item : map.values()) {
+			list.addAll(item);
+		}
+		return list;
 	}
 
 	//endregion

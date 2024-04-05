@@ -1,29 +1,36 @@
-import com.base.tools.time.TimeSpan;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.junit.jupiter.api.Test;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
-
-import static com.base.extensions.java.time.Duration.DayUnit.d;
+import java.util.ArrayList;
 
 public class One {
 
 	@Test
 	public void test() {
-		var begin = LocalDate.now();
-		var end = begin.plusDays(10);
-		var diff = end - begin;
-		var s = diff.totalSeconds;
-		var diff2 = new TimeSpan(2, 0, 0);
-		var t = diff2 - diff;
+		var list = new ArrayList<TestBO>();
+		for (var i = 1; i < 10; i++) {
+			var info = new TestBO("abc" + i, i, LocalDateTime.now().plusDays(i));
+			list.add(info);
+		}
+		var ps = 2D;
+		var p = list.group(t -> t.age);
 
+		System.out.println(list);
+	}
 
-		var lTime = LocalTime.of(10, 10, 10, 20);
-		var ld = begin + lTime;
+	@AllArgsConstructor
+	@Getter
+	@Setter
+	@NoArgsConstructor
+	public class TestBO {
+		private String name;
 
-		// 获取当前日期时间
-		var now = LocalDateTime.now().time;
-		var b = 2 d;
+		private Integer age;
+
+		private LocalDateTime time;
 	}
 }

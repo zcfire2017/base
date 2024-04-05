@@ -13,7 +13,7 @@ public class HourUnit {
 	/**
 	 * 小时 单位
 	 */
-	public static final HourUnit H = new HourUnit();
+	public static final HourUnit h = new HourUnit();
 
 	/**
 	 * 后缀单位
