@@ -1,8 +1,11 @@
 import com.base.tools.time.TimeSpan;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
+
+import static com.base.extensions.java.time.Duration.DayUnit.d;
 
 public class One {
 
@@ -18,5 +21,9 @@ public class One {
 
 		var lTime = LocalTime.of(10, 10, 10, 20);
 		var ld = begin + lTime;
+
+		// 获取当前日期时间
+		var now = LocalDateTime.now().time;
+		var b = 2 d;
 	}
 }

@@ -5,10 +5,7 @@ import com.base.tools.time.enums.DateTimeFormat;
 import manifold.ext.rt.api.Extension;
 import manifold.ext.rt.api.This;
 
-import java.time.Duration;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
+import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 
@@ -17,6 +14,40 @@ import java.time.temporal.ChronoUnit;
  */
 @Extension
 public class LocalDateTimeExtends {
+	//region 扩展方法
+
+	/**
+	 * 日期转时间戳
+	 *
+	 * @param date 日期时间
+	 * @return 时间戳
+	 */
+	public static long getTimestamp(@This LocalDateTime date) {
+		return date.atZone(ZoneId.systemDefault()).toEpochSecond();
+	}
+
+	/**
+	 * 获取日期部分
+	 *
+	 * @param date 日期时间
+	 * @return 日期
+	 */
+	public static LocalDate getDate(@This LocalDateTime date) {
+		return date.toLocalDate();
+	}
+
+	/**
+	 * 获取时间部分
+	 *
+	 * @param date 日期时间
+	 * @return 时间
+	 */
+	public static LocalTime getTime(@This LocalDateTime date) {
+		return date.toLocalTime();
+	}
+
+	//endregion
+
 	//region 日期转字符串
 
 	/**

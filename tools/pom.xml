@@ -14,9 +14,9 @@
 	<dependencies>
 		<!-- 测试 -->
 		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>4.13.2</version>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter</artifactId>
+			<version>5.10.2</version>
 		</dependency>
 		<!--java编译器扩展-->
 		<dependency>
@@ -34,11 +34,6 @@
 			<artifactId>manifold-props-rt</artifactId>
 			<version>${manifold.version}</version>
 		</dependency>
-		<!--		<dependency>-->
-		<!--			<groupId>systems.manifold</groupId>-->
-		<!--			<artifactId>manifold-science</artifactId>-->
-		<!--			<version>${manifold.version}</version>-->
-		<!--		</dependency>-->
 		<!-- lombok 编译 -->
 		<dependency>
 			<groupId>org.projectlombok</groupId>

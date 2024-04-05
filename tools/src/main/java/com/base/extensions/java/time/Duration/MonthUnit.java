@@ -12,7 +12,7 @@ public class MonthUnit {
 	/**
 	 * 月 单位
 	 */
-	public static final MonthUnit mon = new MonthUnit();
+	public static final MonthUnit M = new MonthUnit();
 
 	/**
 	 * 后缀单位

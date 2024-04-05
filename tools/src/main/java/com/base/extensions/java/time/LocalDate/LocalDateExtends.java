@@ -14,6 +14,20 @@ import java.time.temporal.ChronoUnit;
  */
 @Extension
 public class LocalDateExtends {
+	//region 扩展方法
+
+	/**
+	 * 日期转时间戳
+	 *
+	 * @param date 日期
+	 * @return 时间戳
+	 */
+	public static long getTimestamp(@This LocalDate date) {
+		return date.atStartOfDay(ZoneId.systemDefault()).toEpochSecond();
+	}
+
+	//endregion
+
 	//region 日期转字符串
 
 	/**
