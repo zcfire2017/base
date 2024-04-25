@@ -1,7 +1,8 @@
 package com.base.entity.page;
 
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,7 +13,8 @@ import java.util.List;
  * @param <T> 分页数据类型
  * @param <N> 总条数类型
  */
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 public class DataPage<T, N extends Number> {
 

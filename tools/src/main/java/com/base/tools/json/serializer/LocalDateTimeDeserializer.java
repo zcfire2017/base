@@ -22,6 +22,7 @@ public class LocalDateTimeDeserializer extends JsonDeserializer<LocalDateTime> {
 	 *
 	 * @param jsonParser             json解析器
 	 * @param deserializationContext 上下文
+	 *
 	 * @return 枚举类型
 	 **/
 	@Override
@@ -34,16 +35,8 @@ public class LocalDateTimeDeserializer extends JsonDeserializer<LocalDateTime> {
 		//去掉前后空格
 		value = value.trim();
 		LocalDateTime result = null;
-		if (value.length() == DateTimeConst.yyyy_MM_dd.length()) {
-			result = LocalDateTimeUtil.parse(value, DateTimeConst.yyyy_MM_dd);
-		}
-		else if (value.length() == DateTimeConst.yyyy_MM_ddHHmmss.length()) {
-			result = LocalDateTimeUtil.parse(value, DateTimeConst.yyyy_MM_ddHHmmss);
-		}
-		else if (value.length() == DateTimeConst.yyyy_MM_ddHHmmssSSS.length()) {
-			result = LocalDateTimeUtil.parse(value, DateTimeConst.yyyy_MM_ddHHmmssSSS);
-		}
-		if (result == null) {
+		//是否是数字
+		if (value.matches("-?\\d+(\\.\\d+)?")) {
 			//时间戳
 			var time = Long.parseLong(value);
 			Instant instant;
@@ -57,6 +50,17 @@ public class LocalDateTimeDeserializer extends JsonDeserializer<LocalDateTime> {
 			}
 			//返回时间格式，采用当地格式
 			result = LocalDateTime.ofInstant(instant, ZoneId.systemDefault());
+		}
+		else {
+			if (value.length() == DateTimeConst.yyyy_MM_dd.length()) {
+				result = LocalDateTimeUtil.parse(value, DateTimeConst.yyyy_MM_dd);
+			}
+			else if (value.length() == DateTimeConst.yyyy_MM_ddHHmmss.length()) {
+				result = LocalDateTimeUtil.parse(value, DateTimeConst.yyyy_MM_ddHHmmss);
+			}
+			else if (value.length() == DateTimeConst.yyyy_MM_ddHHmmssSSS.length()) {
+				result = LocalDateTimeUtil.parse(value, DateTimeConst.yyyy_MM_ddHHmmssSSS);
+			}
 		}
 
 		return result;

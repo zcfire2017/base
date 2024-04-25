@@ -1,14 +1,16 @@
 package com.base.entity.page;
 
 import jakarta.validation.constraints.NotNull;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 
 /**
  * 分页列表 请求数据Dto
  */
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 public class PageDTO {
 

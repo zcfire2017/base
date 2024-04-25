@@ -19,6 +19,8 @@ public class One {
 		var ps = 2D;
 		var p = list.group(t -> t.age);
 
+		var t = (1, 2, 3);
+
 		System.out.println(list);
 	}
 

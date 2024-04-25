@@ -62,10 +62,20 @@ public class ZTask {
 	 * 创建线程池
 	 *
 	 * @param threads 线程池大小
+	 *
 	 * @return 线程池
 	 */
 	public static ZTask create(Integer threads) {
 		return new ZTask(threads);
+	}
+
+	/**
+	 * 开启异步线程
+	 *
+	 * @param runnable 线程内操作
+	 */
+	public static void run(Runnable runnable) {
+		new Thread(runnable).start();
 	}
 
 	/**

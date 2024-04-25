@@ -1,0 +1,26 @@
+package ${package.ServiceImpl};
+
+import ${package.Entity}.${entity};
+import ${superServiceImplClassPackage};
+import ${package.Mapper}.${table.mapperName};
+
+import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Service;
+
+/**
+ * <p>
+ * $!{table.comment} 仓储服务
+ * </p>
+ *
+ * @author ${author}
+ * @since ${date}
+ */
+@Repository
+#if(${kotlin})
+open class ${table.serviceImplName} : ${superServiceImplClass}<${table.mapperName},${entity}>(){
+
+}
+#else
+public class ${table.serviceImplName} extends ${superServiceImplClass}<${table.mapperName},${entity}>{
+}
+#end
