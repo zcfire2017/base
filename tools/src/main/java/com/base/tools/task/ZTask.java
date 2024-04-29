@@ -4,10 +4,7 @@ package com.base.tools.task;
 import com.base.tools.log.LogHelper;
 
 import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
 
 /**
  * 任务
@@ -28,7 +25,7 @@ public class ZTask {
 	 * 线程池任务
 	 * 用于等待线程池任务执行完成
 	 */
-	private final List<Future<?>> _futures = new java.util.concurrent.CopyOnWriteArrayList<>();
+	private final List<Future<?>> _futures = new CopyOnWriteArrayList<>();
 
 	/**
 	 * 初始化(最大线程)
@@ -90,6 +87,22 @@ public class ZTask {
 	}
 
 	/**
+	 * 添加执行线程
+	 *
+	 * @param command 执行线程
+	 * @param result  返回类
+	 *
+	 * @return 返回结果
+	 */
+	public <T> T execute(Runnable command, T result) {
+		//防止线程池已关闭
+		if (!this._pool.isShutdown())
+			_futures.add(this._pool.submit(command, result));
+
+		return result;
+	}
+
+	/**
 	 * 等待线程执行完成
 	 * 不关闭线程池
 	 */
@@ -98,10 +111,36 @@ public class ZTask {
 		for (var future : _futures) {
 			try {
 				//监听线程池子线程执行状态及执行结果。
-				future.get();
+				future.get(10, TimeUnit.SECONDS);
 			} catch (Exception e) {
 				LogHelper.error(e);
+				future.cancel(true);
 			}
+		}
+		//关闭线程池
+		this.close();
+	}
+
+	/**
+	 * 等待线程执行完成
+	 *
+	 * @param close 是否关闭线程池
+	 */
+	public void await(boolean close) {
+		//等待线程执行完成
+		for (var future : _futures) {
+			try {
+				//监听线程池子线程执行状态及执行结果。
+				future.get(10, TimeUnit.SECONDS);
+			} catch (Exception e) {
+				LogHelper.error(e);
+				future.cancel(true);
+			}
+		}
+
+		//关闭线程池
+		if (close) {
+			this.close();
 		}
 	}
 

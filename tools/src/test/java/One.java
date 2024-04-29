@@ -1,34 +1,32 @@
+import com.base.tools.task.ZTask;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.junit.jupiter.api.Test;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 
 public class One {
 
 	@Test
 	public void test() {
-		var list = new ArrayList<TestBO>();
-		for (var i = 1; i < 10; i++) {
-			var info = new TestBO("abc" + i, i, LocalDateTime.now().plusDays(i));
-			list.add(info);
-		}
-		var ps = 2D;
-		var p = list.group(t -> t.age);
+		var tasl = ZTask.create();
+		BigDecimal a = BigDecimal.ONE;
+		var t = tasl.execute(() -> {
+		}, a);
 
-		var t = (1, 2, 3);
+		tasl.await();
 
-		System.out.println(list);
+		var b = 1;
 	}
 
 	@AllArgsConstructor
 	@Getter
 	@Setter
 	@NoArgsConstructor
-	public class TestBO {
+	public static class TestBO {
 		private String name;
 
 		private Integer age;
