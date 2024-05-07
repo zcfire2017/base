@@ -2,7 +2,6 @@ package com.base.tools.json.serializer;
 
 import cn.hutool.core.date.LocalDateTimeUtil;
 import cn.hutool.core.util.StrUtil;
-import com.base.tools.time.DateTimeConst;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
@@ -34,7 +33,7 @@ public class LocalDateDeserializer extends JsonDeserializer<LocalDate> {
 			return null;
 
 		value = value.trim();
-		LocalDate result = null;
+		LocalDate result;
 		if (value.matches("-?\\d+(\\.\\d+)?")) {
 			var time = Long.parseLong(value);
 			Instant instant;
@@ -50,15 +49,7 @@ public class LocalDateDeserializer extends JsonDeserializer<LocalDate> {
 			result = LocalDateTime.ofInstant(instant, ZoneId.systemDefault()).toLocalDate();
 		}
 		else {
-			if (value.length() == DateTimeConst.yyyy_MM_dd.length()) {
-				result = LocalDateTimeUtil.parseDate(value, DateTimeConst.yyyy_MM_dd);
-			}
-			else if (value.length() == DateTimeConst.yyyy_MM_ddHHmmss.length()) {
-				result = LocalDateTimeUtil.parseDate(value, DateTimeConst.yyyy_MM_ddHHmmss);
-			}
-			else if (value.length() == DateTimeConst.yyyy_MM_ddHHmmssSSS.length()) {
-				result = LocalDateTimeUtil.parseDate(value, DateTimeConst.yyyy_MM_ddHHmmssSSS);
-			}
+			result = LocalDateTimeUtil.parseDate(value);
 		}
 
 		return result;

@@ -2,7 +2,6 @@ package com.base.tools.json.serializer;
 
 import cn.hutool.core.date.LocalDateTimeUtil;
 import cn.hutool.core.util.StrUtil;
-import com.base.tools.time.DateTimeConst;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
@@ -34,7 +33,7 @@ public class LocalDateTimeDeserializer extends JsonDeserializer<LocalDateTime> {
 
 		//去掉前后空格
 		value = value.trim();
-		LocalDateTime result = null;
+		LocalDateTime result;
 		//是否是数字
 		if (value.matches("-?\\d+(\\.\\d+)?")) {
 			//时间戳
@@ -52,15 +51,7 @@ public class LocalDateTimeDeserializer extends JsonDeserializer<LocalDateTime> {
 			result = LocalDateTime.ofInstant(instant, ZoneId.systemDefault());
 		}
 		else {
-			if (value.length() == DateTimeConst.yyyy_MM_dd.length()) {
-				result = LocalDateTimeUtil.parse(value, DateTimeConst.yyyy_MM_dd);
-			}
-			else if (value.length() == DateTimeConst.yyyy_MM_ddHHmmss.length()) {
-				result = LocalDateTimeUtil.parse(value, DateTimeConst.yyyy_MM_ddHHmmss);
-			}
-			else if (value.length() == DateTimeConst.yyyy_MM_ddHHmmssSSS.length()) {
-				result = LocalDateTimeUtil.parse(value, DateTimeConst.yyyy_MM_ddHHmmssSSS);
-			}
+			result = LocalDateTimeUtil.parse(value);
 		}
 
 		return result;
