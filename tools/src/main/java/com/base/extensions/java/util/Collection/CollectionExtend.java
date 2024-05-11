@@ -3,6 +3,7 @@ package com.base.extensions.java.util.Collection;
 import cn.hutool.core.convert.Convert;
 import com.base.tools.linq.ZLinq;
 import com.base.tools.linq.ZNumberLinq;
+import com.base.tools.tree.RecursionTree;
 import manifold.ext.rt.api.Extension;
 import manifold.ext.rt.api.This;
 
@@ -24,6 +25,7 @@ public class CollectionExtend {
 	 *
 	 * @param collection 集合
 	 * @param <E>        集合对象类型
+	 *
 	 * @return 是否不为空
 	 */
 	public static <E> boolean isNotEmpty(@This Collection<E> collection) {
@@ -42,6 +44,7 @@ public class CollectionExtend {
 	 * @param collection 集合对象
 	 * @param predicate  过滤条件
 	 * @param <E>        实体对象
+	 *
 	 * @return 集合操作对象
 	 */
 	public static <E> ZLinq<E> where(@This Collection<E> collection, Predicate<E> predicate) {
@@ -54,6 +57,7 @@ public class CollectionExtend {
 	 * @param collection 集合对象
 	 * @param predicate  过滤条件
 	 * @param <E>        实体对象
+	 *
 	 * @return 集合操作对象
 	 */
 	public static <E> boolean match(@This Collection<E> collection, Predicate<E> predicate) {
@@ -67,6 +71,7 @@ public class CollectionExtend {
 	 * @param predicate  过滤条件
 	 * @param isAll      是否全部匹配
 	 * @param <E>        实体对象
+	 *
 	 * @return 集合操作对象
 	 */
 	public static <E> boolean match(@This Collection<E> collection, Predicate<E> predicate, boolean isAll) {
@@ -85,6 +90,7 @@ public class CollectionExtend {
 	 * @param mapper     生成返回对象
 	 * @param <E>        集合实体对象
 	 * @param <R>        返回实体对象
+	 *
 	 * @return 集合操作对象
 	 */
 	public static <E, R> ZLinq<R> select(@This Collection<E> collection, Function<E, R> mapper) {
@@ -99,6 +105,7 @@ public class CollectionExtend {
 	 * @param mapper     生成返回对象
 	 * @param <E>        集合实体对象
 	 * @param <R>        返回实体对象
+	 *
 	 * @return 集合操作对象
 	 */
 	public static <E extends Collection<T>, T, R> ZLinq<R> selectMany(@This Collection<E> collection, Class<T> clazz, Function<T, R> mapper) {
@@ -118,6 +125,7 @@ public class CollectionExtend {
 	 * @param mapper     生成返回对象
 	 * @param <E>        集合实体对象
 	 * @param <R>        返回实体对象
+	 *
 	 * @return 集合操作对象
 	 */
 	public static <E, R> ZLinq<R> selectMany(@This Collection<Collection<E>> collection, Function<E, R> mapper) {
@@ -136,6 +144,7 @@ public class CollectionExtend {
 	 * @param mapper     生成返回对象
 	 * @param <E>        集合实体对象
 	 * @param <R>        返回实体对象
+	 *
 	 * @return 集合操作对象
 	 */
 	public static <E, R extends Number & Comparable<? super R>> ZNumberLinq<R> selectNum(@This Collection<E> collection, Function<E, R> mapper) {
@@ -148,6 +157,7 @@ public class CollectionExtend {
 	 * @param skip       跳过的条数
 	 * @param collection 集合对象
 	 * @param <E>        集合实体对象
+	 *
 	 * @return 第一个对象
 	 */
 	public static <E> ZLinq<E> skip(@This Collection<E> collection, long skip) {
@@ -160,10 +170,48 @@ public class CollectionExtend {
 	 * @param limit      获取的条数
 	 * @param collection 集合对象
 	 * @param <E>        集合实体对象
+	 *
 	 * @return 第一个对象
 	 */
 	public static <E> ZLinq<E> limit(@This Collection<E> collection, long limit) {
 		return create(collection).limit(limit);
+	}
+
+	//endregion
+
+	//region 树形
+
+	/**
+	 * 树形递归
+	 *
+	 * @param collection 集合对象
+	 * @param id         主键属性
+	 * @param pId        父级属性
+	 * @param rootId     根节点值
+	 * @param <E>        集合实体对象
+	 * @param <D>        主键属性对象
+	 * @param <P>        父级属性对象
+	 *
+	 * @return 集合操作对象
+	 */
+	public static <E, D, P> RecursionTree<E, D, P> tree(@This Collection<E> collection, Function<E, D> id, Function<E, P> pId, D rootId) {
+		return new RecursionTree<>(collection, id, pId, rootId);
+	}
+
+	/**
+	 * 树形递归
+	 *
+	 * @param collection 集合对象
+	 * @param id         主键属性
+	 * @param pId        父级属性
+	 * @param <E>        集合实体对象
+	 * @param <D>        主键属性对象
+	 * @param <P>        父级属性对象
+	 *
+	 * @return 集合操作对象
+	 */
+	public static <E, D, P> RecursionTree<E, D, P> tree(@This Collection<E> collection, Function<E, D> id, Function<E, P> pId) {
+		return new RecursionTree<>(collection, id, pId);
 	}
 
 	//endregion
@@ -177,6 +225,7 @@ public class CollectionExtend {
 	 *
 	 * @param collection 集合对象
 	 * @param <E>        集合实体对象
+	 *
 	 * @return 第一个对象
 	 */
 	public static <E> E first(@This Collection<E> collection) {
@@ -193,6 +242,7 @@ public class CollectionExtend {
 	 * @param collection   集合对象
 	 * @param <E>          集合实体对象
 	 * @param defaultValue 默认值
+	 *
 	 * @return 第一个对象
 	 */
 	public static <E> E first(@This Collection<E> collection, E defaultValue) {
@@ -210,6 +260,7 @@ public class CollectionExtend {
 	 * @param <E>          集合实体对象
 	 * @param predicate    过滤条件
 	 * @param defaultValue 默认值
+	 *
 	 * @return 第一个对象
 	 */
 	public static <E> E first(@This Collection<E> collection, Predicate<E> predicate, E defaultValue) {
@@ -228,6 +279,7 @@ public class CollectionExtend {
 	 * @param predicate  过滤条件
 	 * @param mapper     生成返回对象
 	 * @param <R>        返回实体对象
+	 *
 	 * @return 第一个对象
 	 */
 	public static <E, R> R first(@This Collection<E> collection, Predicate<E> predicate, Function<E, R> mapper) {
@@ -246,6 +298,7 @@ public class CollectionExtend {
 	 * @param mapper       生成返回对象
 	 * @param <R>          返回实体对象
 	 * @param defaultValue 默认值
+	 *
 	 * @return 第一个对象
 	 */
 	public static <E, R> R first(@This Collection<E> collection, Predicate<E> predicate, Function<E, R> mapper, R defaultValue) {
@@ -261,6 +314,7 @@ public class CollectionExtend {
 	 * @param collection 集合对象
 	 * @param <E>        集合实体对象
 	 * @param predicate  过滤条件
+	 *
 	 * @return 第一个对象
 	 */
 	public static <E> E first(@This Collection<E> collection, Predicate<E> predicate) {
@@ -280,6 +334,7 @@ public class CollectionExtend {
 	 *
 	 * @param collection 集合对象
 	 * @param <E>        集合实体对象
+	 *
 	 * @return List集合
 	 */
 	public static <E> List<E> toList(@This Collection<E> collection) {
@@ -295,6 +350,7 @@ public class CollectionExtend {
 	 * @param collection 集合对象
 	 * @param <E>        集合实体对象
 	 * @param predicate  筛选条件
+	 *
 	 * @return List集合
 	 */
 	public static <E> List<E> toList(@This Collection<E> collection, Predicate<E> predicate) {
@@ -312,6 +368,7 @@ public class CollectionExtend {
 	 * @param predicate  筛选条件
 	 * @param mapper     生成返回对象
 	 * @param <R>        返回实体对象
+	 *
 	 * @return List集合
 	 */
 	public static <E, R> List<R> toList(@This Collection<E> collection, Predicate<E> predicate, Function<E, R> mapper) {
@@ -326,6 +383,7 @@ public class CollectionExtend {
 	 *
 	 * @param collection 集合对象
 	 * @param <E>        集合实体对象
+	 *
 	 * @return Set集合
 	 */
 	public static <E> Set<E> toSet(@This Collection<E> collection) {
@@ -341,6 +399,7 @@ public class CollectionExtend {
 	 * @param collection 集合对象
 	 * @param <E>        集合实体对象
 	 * @param predicate  筛选条件
+	 *
 	 * @return Set集合
 	 */
 	public static <E> Set<E> toSet(@This Collection<E> collection, Predicate<E> predicate) {
@@ -358,6 +417,7 @@ public class CollectionExtend {
 	 * @param predicate  筛选条件
 	 * @param mapper     生成返回对象
 	 * @param <R>        返回实体对象
+	 *
 	 * @return Set集合
 	 */
 	public static <E, R> Set<R> toSet(@This Collection<E> collection, Predicate<E> predicate, Function<E, R> mapper) {
@@ -377,6 +437,7 @@ public class CollectionExtend {
 	 * @param <E>         集合实体对象
 	 * @param <R>         键类型
 	 * @param <P>         值类型
+	 *
 	 * @return map集合
 	 */
 	public static <E, R, P> Map<R, P> toMap(@This Collection<E> collection, Predicate<E> predicate, Function<E, R> keyMapper, Function<E, P> valueMapper) {
@@ -395,6 +456,7 @@ public class CollectionExtend {
 	 * @param <E>         集合实体对象
 	 * @param <R>         键类型
 	 * @param <P>         值类型
+	 *
 	 * @return map集合
 	 */
 	public static <E, R, P> Map<R, P> toMap(@This Collection<E> collection, Function<E, R> keyMapper, Function<E, P> valueMapper) {
@@ -411,6 +473,7 @@ public class CollectionExtend {
 	 * @param keyMapper  键对象
 	 * @param <E>        集合实体对象
 	 * @param <R>        键类型
+	 *
 	 * @return map集合
 	 */
 	public static <E, R> Map<R, E> toMap(@This Collection<E> collection, Function<E, R> keyMapper) {
@@ -433,6 +496,7 @@ public class CollectionExtend {
 	 * @param order      排序字段
 	 * @param <U>        排序对象
 	 * @param <E>        集合实体对象
+	 *
 	 * @return 操作对象
 	 */
 	public static <E, U extends Comparable<? super U>> ZLinq<E> asc(@This Collection<E> collection, Function<E, U> order) {
@@ -444,6 +508,7 @@ public class CollectionExtend {
 	 *
 	 * @param collection 集合对象
 	 * @param <E>        集合实体对象
+	 *
 	 * @return 操作对象
 	 */
 	public static <E extends Comparable<? super E>> ZLinq<E> asc(@This Collection<E> collection) {
@@ -457,6 +522,7 @@ public class CollectionExtend {
 	 * @param order      排序字段
 	 * @param <U>        排序对象
 	 * @param <E>        集合实体对象
+	 *
 	 * @return 操作对象
 	 */
 	public static <E, U extends Comparable<? super U>> ZLinq<E> desc(@This Collection<E> collection, Function<E, U> order) {
@@ -468,6 +534,7 @@ public class CollectionExtend {
 	 *
 	 * @param collection 集合对象
 	 * @param <E>        集合实体对象
+	 *
 	 * @return 操作对象
 	 */
 	public static <E extends Comparable<? super E>> ZLinq<E> desc(@This Collection<E> collection) {
@@ -483,6 +550,7 @@ public class CollectionExtend {
 	 *
 	 * @param collection 集合对象
 	 * @param <E>        集合对象类型
+	 *
 	 * @return set集合
 	 */
 	public static <E> Set<E> distinct(@This Collection<E> collection) {
@@ -497,6 +565,7 @@ public class CollectionExtend {
 	 *
 	 * @param collection 集合对象
 	 * @param <E>        集合对象类型
+	 *
 	 * @return set集合
 	 */
 	public static <E, U extends Comparable<? super U>> List<E> distinct(@This Collection<E> collection, Function<E, U> selector) {
@@ -511,6 +580,7 @@ public class CollectionExtend {
 	 *
 	 * @param collection 集合对象
 	 * @param <E>        集合对象类型
+	 *
 	 * @return 总条数
 	 */
 	public static <E> int count(@This Collection<E> collection) {
@@ -528,6 +598,7 @@ public class CollectionExtend {
 	 * @param <E>        集合对象类型
 	 * @param clazz      返回对象
 	 * @param <R>        返回对象类型
+	 *
 	 * @return 总条数
 	 */
 	public static <E, R extends Number> R count(@This Collection<E> collection, Predicate<E> predicate, Class<R> clazz) {
@@ -543,6 +614,7 @@ public class CollectionExtend {
 	 * @param collection 集合对象
 	 * @param predicate  过滤条件
 	 * @param <E>        集合对象类型
+	 *
 	 * @return 总条数
 	 */
 	public static <E> Long count(@This Collection<E> collection, Predicate<E> predicate) {
@@ -559,6 +631,7 @@ public class CollectionExtend {
 	 * @param <E>        集合对象类型
 	 * @param clazz      返回对象
 	 * @param <R>        返回对象类型
+	 *
 	 * @return 总条数
 	 */
 	public static <E, R extends Number> R count(@This Collection<E> collection, Class<R> clazz) {
@@ -575,6 +648,7 @@ public class CollectionExtend {
 	 * @param selector   返回的对象
 	 * @param <U>        对象类型
 	 * @param <E>        集合实体对象
+	 *
 	 * @return 最大值
 	 */
 	public static <E extends Class<? extends E>, U extends Comparable<? super U>> U max(@This Collection<E> collection, Function<E, U> selector) {
@@ -589,6 +663,7 @@ public class CollectionExtend {
 	 *
 	 * @param collection 集合对象
 	 * @param <E>        集合实体对象
+	 *
 	 * @return 最大值
 	 */
 	public static <E extends Comparable<? super E>> E max(@This Collection<E> collection) {
@@ -605,6 +680,7 @@ public class CollectionExtend {
 	 * @param selector   返回的对象
 	 * @param <U>        对象类型
 	 * @param <E>        集合实体对象
+	 *
 	 * @return 最小值
 	 */
 	public static <E, U extends Comparable<? super U>> U min(@This Collection<E> collection, Function<E, U> selector) {
@@ -619,6 +695,7 @@ public class CollectionExtend {
 	 *
 	 * @param collection 集合对象
 	 * @param <E>        集合实体对象
+	 *
 	 * @return 最小值
 	 */
 	public static <E extends Comparable<? super E>> E min(@This Collection<E> collection) {
@@ -635,6 +712,7 @@ public class CollectionExtend {
 	 * @param selector   分组对象
 	 * @param <E>        集合对象类型
 	 * @param <U>        分组对象类型
+	 *
 	 * @return 分组map集合
 	 */
 	public static <E, U> Map<U, List<E>> group(@This Collection<E> collection, Function<E, U> selector) {
@@ -650,6 +728,7 @@ public class CollectionExtend {
 	 * @param collection 集合对象
 	 * @param <E>        集合实体对象
 	 * @param split      分隔符
+	 *
 	 * @return 最大值
 	 */
 	public static <E> String join(@This Collection<E> collection, String split) {
@@ -668,6 +747,7 @@ public class CollectionExtend {
 	 *
 	 * @param collection 集合对象
 	 * @param <E>        集合对象类型
+	 *
 	 * @return 数字之和
 	 */
 	public static <E extends Number & Comparable<? super E>> E sum(@This Collection<E> collection) {
@@ -683,6 +763,7 @@ public class CollectionExtend {
 	 * @param collection   集合对象
 	 * @param <E>          集合对象类型
 	 * @param defaultValue 默认值
+	 *
 	 * @return 数字之和
 	 */
 	public static <E extends Number & Comparable<? super E>> E sum(@This Collection<E> collection, E defaultValue) {
@@ -699,6 +780,7 @@ public class CollectionExtend {
 	 * @param <E>        集合对象类型
 	 * @param selector   选择的对象
 	 * @param <R>        选择对象的类型
+	 *
 	 * @return 数字之和
 	 */
 	public static <E, R extends Number & Comparable<? super R>> R sum(@This Collection<E> collection, Function<E, R> selector) {
@@ -716,6 +798,7 @@ public class CollectionExtend {
 	 * @param selector     选择的对象
 	 * @param <R>          选择对象的类型
 	 * @param defaultValue 默认值
+	 *
 	 * @return 数字之和
 	 */
 	public static <E, R extends Number & Comparable<? super R>> R sum(@This Collection<E> collection, Function<E, R> selector, R defaultValue) {
@@ -732,6 +815,7 @@ public class CollectionExtend {
 	 * @param <E>        集合对象类型
 	 * @param clazz      计算后的对象
 	 * @param <R>        计算后的类型
+	 *
 	 * @return 数字之和
 	 */
 	public static <E extends Number & Comparable<? super E>, R extends Number> R sum(@This Collection<E> collection, Class<R> clazz) {
@@ -750,6 +834,7 @@ public class CollectionExtend {
 	 * @param <R>        选择对象的类型
 	 * @param clazz      计算后的对象
 	 * @param <T>        计算对象的类型
+	 *
 	 * @return 数字之和
 	 */
 	public static <E, R extends Number & Comparable<? super R>, T extends Number & Comparable<? super T>> T sum(@This Collection<E> collection, Function<E, R> selector, Class<T> clazz) {
@@ -771,6 +856,7 @@ public class CollectionExtend {
 	 * @param collection 集合对象
 	 * @param other      集合对象
 	 * @param <E>        集合实体对象
+	 *
 	 * @return 交集
 	 */
 	public static <E extends Number> List<E> intersectDistinct(@This Collection<E> collection, Collection<E> other) {
@@ -789,6 +875,7 @@ public class CollectionExtend {
 	 * @param collection 集合对象
 	 * @param other      集合对象
 	 * @param <E>        集合实体对象
+	 *
 	 * @return 交集
 	 */
 	public static <E extends Number> List<E> intersect(@This Collection<E> collection, Collection<E> other) {
@@ -807,6 +894,7 @@ public class CollectionExtend {
 	 * @param collection 集合对象
 	 * @param other      集合对象
 	 * @param <E>        集合实体对象
+	 *
 	 * @return 并集
 	 */
 	public static <E extends Number> List<E> unionDistinct(@This Collection<E> collection, Collection<E> other) {
@@ -830,6 +918,7 @@ public class CollectionExtend {
 	 * @param collection 集合对象
 	 * @param other      集合对象
 	 * @param <E>        集合实体对象
+	 *
 	 * @return 并集
 	 */
 	public static <E extends Number> List<E> union(@This Collection<E> collection, Collection<E> other) {
@@ -853,6 +942,7 @@ public class CollectionExtend {
 	 * @param collection 集合对象
 	 * @param other      集合对象
 	 * @param <E>        集合实体对象
+	 *
 	 * @return 差集
 	 */
 	public static <E extends Number> List<E> exceptDistinct(@This Collection<E> collection, Collection<E> other) {
@@ -876,6 +966,7 @@ public class CollectionExtend {
 	 * @param collection 集合对象
 	 * @param other      集合对象
 	 * @param <E>        集合实体对象
+	 *
 	 * @return 差集
 	 */
 	public static <E extends Number> List<E> except(@This Collection<E> collection, Collection<E> other) {

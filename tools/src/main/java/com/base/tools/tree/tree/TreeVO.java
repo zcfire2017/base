@@ -1,16 +1,17 @@
-package com.base.entity.tree;
+package com.base.tools.tree.tree;
 
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * 树形结构
  */
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 public class TreeVO {
 	/**
@@ -38,6 +39,7 @@ public class TreeVO {
 	 *
 	 * @param list 原集合
 	 * @param id   自身id
+	 *
 	 * @return 递归后的集合
 	 */
 	public static List<TreeVO> RecursionWithSelf(List<TreeVO> list, int id) {
@@ -48,7 +50,7 @@ public class TreeVO {
 			//添加自己
 			result.add(model);
 			//查找子集
-			List<TreeVO> children = list.stream().filter(item -> item.getPId() == id).collect(Collectors.toList());
+			List<TreeVO> children = list.where(item -> item.getPId() == id).toList();
 			if (!children.isEmpty()) {
 				for (TreeVO child : children) {
 					RecursionWithSelf(list, child.getKey());
@@ -64,12 +66,13 @@ public class TreeVO {
 	 *
 	 * @param list 原集合
 	 * @param pid  上级id
+	 *
 	 * @return 递归后的集合
 	 */
 	public static List<TreeVO> Recursion(List<TreeVO> list, int pid) {
 		List<TreeVO> result = new ArrayList<>();
 
-		List<TreeVO> children = list.stream().filter(item -> item.getPId() == pid).collect(Collectors.toList());
+		List<TreeVO> children = list.where(item -> item.getPId() == pid).toList();
 		if (!children.isEmpty()) {
 			for (TreeVO child : children) {
 				result.add(child);
