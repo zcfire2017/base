@@ -18,7 +18,9 @@ public class One {
 			}
 		}
 
-		
+		var tree = list.tree(TestBO::getId, TestBO::getPId).getChildList(0);
+
+		System.out.println(" ...");
 	}
 
 	@Getter

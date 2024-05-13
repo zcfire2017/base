@@ -43,16 +43,6 @@ public class RecursionTree<T, D, P> {
 	private final D _rootId;
 
 	/**
-	 * 最大递归层级
-	 */
-	private static final Byte _maxLevel = 100;
-
-	/**
-	 * 当前递归层级
-	 */
-	private Byte _level = 0;
-
-	/**
 	 * 构造函数
 	 *
 	 * @param list      数据集合
@@ -66,6 +56,13 @@ public class RecursionTree<T, D, P> {
 		_idColumn = idColumn;
 		_pIdColumn = pIdColumn;
 		_rootId = rootId;
+		//判断主键类型
+		if (list.isNotEmpty() && rootId != null) {
+			var keyClass = list.first().getClass();
+			if (!keyClass.equals(rootId.getClass())) {
+				throw new RuntimeException("主键类型不一致");
+			}
+		}
 	}
 
 	/**
@@ -95,11 +92,11 @@ public class RecursionTree<T, D, P> {
 		if (id == null)
 			return result;
 
-		//重置层级
-		_level = 0;
 		//包含自身
 		if (includeSelf) {
-			result.add(_mainMap.get(id));
+			var self = _mainMap.get(id);
+			if (self != null)
+				result.add(self);
 		}
 		//添加子集集合
 		result.addAll(recursionChild(id));
@@ -110,6 +107,7 @@ public class RecursionTree<T, D, P> {
 	/**
 	 * 获取子集集合
 	 * <p>默认包含自身</p>
+	 * <p>不传根节点ID，那么初始化的时候要传根节点ID</p>
 	 *
 	 * @param id 主键ID
 	 *
@@ -122,6 +120,7 @@ public class RecursionTree<T, D, P> {
 	/**
 	 * 获取子集集合
 	 * <p>默认包含自身</p>
+	 * <p>不传根节点ID，那么初始化的时候要传根节点ID</p>
 	 *
 	 * @return 子集集合
 	 */
@@ -138,12 +137,7 @@ public class RecursionTree<T, D, P> {
 	 */
 	private List<T> recursionChild(D id) {
 		var result = new ArrayList<T>();
-		//没有根值或递归层级超过限制
-		if (id == null || _level >= _maxLevel)
-			return result;
 
-		//重置层级
-		_level = 0;
 		//查找子集
 		var childrenList = _parentMap.get(id);
 		if (childrenList != null && childrenList.isNotEmpty()) {
@@ -172,6 +166,9 @@ public class RecursionTree<T, D, P> {
 	public TreeNode<T> getTreeList(D id) {
 		//返回
 		var result = new TreeNode<T>();
+		if (_rootId == null)
+			return result;
+
 		result.setNode(_mainMap.get(id));
 		//添加子集集合
 		result.setChildList(recursionTree(id));
@@ -182,6 +179,7 @@ public class RecursionTree<T, D, P> {
 
 	/**
 	 * 获取树形集合
+	 * <p>不传根节点ID，那么初始化的时候要传根节点ID</p>
 	 *
 	 * @return 树形集合
 	 */
@@ -199,7 +197,7 @@ public class RecursionTree<T, D, P> {
 	private List<TreeNode<T>> recursionTree(D id) {
 		var result = new ArrayList<TreeNode<T>>();
 		//没有根值或递归层级超过限制
-		if (id == null || _level >= _maxLevel)
+		if (id == null)
 			return result;
 
 		//查找子集
