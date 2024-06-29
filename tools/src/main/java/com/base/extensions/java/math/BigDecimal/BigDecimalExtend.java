@@ -18,6 +18,7 @@ public abstract class BigDecimalExtend {
 	 *
 	 * @param obj    BigDecimal对象
 	 * @param number 数字对象
+	 *
 	 * @return BigDecimal
 	 */
 	public static @Self BigDecimal from(@ThisClass Class<BigDecimal> obj, Object number) {
@@ -32,6 +33,7 @@ public abstract class BigDecimalExtend {
 	 * 保留小数位（两位）
 	 *
 	 * @param decimal 小数
+	 *
 	 * @return 保留两位小数
 	 */
 	public static BigDecimal digit(@This BigDecimal decimal) {
@@ -43,6 +45,7 @@ public abstract class BigDecimalExtend {
 	 *
 	 * @param decimal 小数
 	 * @param digit   小数位
+	 *
 	 * @return 保留两位小数
 	 */
 	public static BigDecimal digit(@This BigDecimal decimal, int digit) {
@@ -53,6 +56,7 @@ public abstract class BigDecimalExtend {
 	 * 向上取整
 	 *
 	 * @param decimal 小数
+	 *
 	 * @return 大于小数的最小整数
 	 */
 	public static Integer ceil(@This BigDecimal decimal) {
@@ -70,6 +74,7 @@ public abstract class BigDecimalExtend {
 	 *
 	 * @param left  左边小数
 	 * @param right 右边8位整数
+	 *
 	 * @return 小数
 	 */
 	public static BigDecimal plus(@This BigDecimal left, byte right) {
@@ -81,6 +86,7 @@ public abstract class BigDecimalExtend {
 	 *
 	 * @param left  左边小数
 	 * @param right 右边16位整数
+	 *
 	 * @return 小数
 	 */
 	public static BigDecimal plus(@This BigDecimal left, short right) {
@@ -92,6 +98,7 @@ public abstract class BigDecimalExtend {
 	 *
 	 * @param left  左边小数
 	 * @param right 右边32位整数
+	 *
 	 * @return 小数
 	 */
 	public static BigDecimal plus(@This BigDecimal left, int right) {
@@ -103,6 +110,7 @@ public abstract class BigDecimalExtend {
 	 *
 	 * @param left  左边小数
 	 * @param right 右边64位整数
+	 *
 	 * @return 小数
 	 */
 	public static BigDecimal plus(@This BigDecimal left, long right) {
@@ -114,6 +122,7 @@ public abstract class BigDecimalExtend {
 	 *
 	 * @param left  左边小数
 	 * @param right 右边双精度浮点小数
+	 *
 	 * @return 小数
 	 */
 	public static BigDecimal plus(@This BigDecimal left, double right) {
@@ -125,6 +134,7 @@ public abstract class BigDecimalExtend {
 	 *
 	 * @param left  左边小数
 	 * @param right 右边单精度浮点小数
+	 *
 	 * @return 小数
 	 */
 	public static BigDecimal plus(@This BigDecimal left, float right) {
@@ -136,6 +146,7 @@ public abstract class BigDecimalExtend {
 	 *
 	 * @param left  左边小数
 	 * @param right 右边单精度浮点小数
+	 *
 	 * @return 小数
 	 */
 	public static BigDecimal plus(@This BigDecimal left, BigDecimal right) {
@@ -151,6 +162,7 @@ public abstract class BigDecimalExtend {
 	 *
 	 * @param left  左边小数
 	 * @param right 右边8位整数
+	 *
 	 * @return 小数
 	 */
 	public static BigDecimal minus(@This BigDecimal left, byte right) {
@@ -162,6 +174,7 @@ public abstract class BigDecimalExtend {
 	 *
 	 * @param left  左边小数
 	 * @param right 右边16位整数
+	 *
 	 * @return 小数
 	 */
 	public static BigDecimal minus(@This BigDecimal left, short right) {
@@ -173,6 +186,7 @@ public abstract class BigDecimalExtend {
 	 *
 	 * @param left  左边小数
 	 * @param right 右边32位整数
+	 *
 	 * @return 小数
 	 */
 	public static BigDecimal minus(@This BigDecimal left, int right) {
@@ -184,6 +198,7 @@ public abstract class BigDecimalExtend {
 	 *
 	 * @param left  左边小数
 	 * @param right 右边64位整数
+	 *
 	 * @return 小数
 	 */
 	public static BigDecimal minus(@This BigDecimal left, long right) {
@@ -195,6 +210,7 @@ public abstract class BigDecimalExtend {
 	 *
 	 * @param left  左边小数
 	 * @param right 右边双精度浮点小数
+	 *
 	 * @return 小数
 	 */
 	public static BigDecimal minus(@This BigDecimal left, double right) {
@@ -206,6 +222,7 @@ public abstract class BigDecimalExtend {
 	 *
 	 * @param left  左边小数
 	 * @param right 右边单精度浮点小数
+	 *
 	 * @return 小数
 	 */
 	public static BigDecimal minus(@This BigDecimal left, float right) {
@@ -217,9 +234,16 @@ public abstract class BigDecimalExtend {
 	 *
 	 * @param left  左边小数
 	 * @param right 右边单精度浮点小数
+	 *
 	 * @return 小数
 	 */
 	public static BigDecimal minus(@This BigDecimal left, BigDecimal right) {
+		if (left == null) {
+			left = BigDecimal.ZERO;
+		}
+		if (right == null) {
+			right = BigDecimal.ZERO;
+		}
 		return left.subtract(right);
 	}
 
@@ -232,6 +256,7 @@ public abstract class BigDecimalExtend {
 	 *
 	 * @param left  左边小数
 	 * @param right 右边8位整数
+	 *
 	 * @return 小数
 	 */
 	public static BigDecimal times(@This BigDecimal left, byte right) {
@@ -243,6 +268,7 @@ public abstract class BigDecimalExtend {
 	 *
 	 * @param left  左边小数
 	 * @param right 右边16位整数
+	 *
 	 * @return 小数
 	 */
 	public static BigDecimal times(@This BigDecimal left, short right) {
@@ -254,6 +280,7 @@ public abstract class BigDecimalExtend {
 	 *
 	 * @param left  左边小数
 	 * @param right 右边32位整数
+	 *
 	 * @return 小数
 	 */
 	public static BigDecimal times(@This BigDecimal left, int right) {
@@ -265,6 +292,7 @@ public abstract class BigDecimalExtend {
 	 *
 	 * @param left  左边小数
 	 * @param right 右边64位整数
+	 *
 	 * @return 小数
 	 */
 	public static BigDecimal times(@This BigDecimal left, long right) {
@@ -276,6 +304,7 @@ public abstract class BigDecimalExtend {
 	 *
 	 * @param left  左边小数
 	 * @param right 右边双精度浮点小数
+	 *
 	 * @return 小数
 	 */
 	public static BigDecimal times(@This BigDecimal left, double right) {
@@ -287,6 +316,7 @@ public abstract class BigDecimalExtend {
 	 *
 	 * @param left  左边小数
 	 * @param right 右边单精度浮点小数
+	 *
 	 * @return 小数
 	 */
 	public static BigDecimal times(@This BigDecimal left, float right) {
@@ -298,9 +328,16 @@ public abstract class BigDecimalExtend {
 	 *
 	 * @param left  左边小数
 	 * @param right 右边单精度浮点小数
+	 *
 	 * @return 小数
 	 */
 	public static BigDecimal times(@This BigDecimal left, BigDecimal right) {
+		if (left == null) {
+			left = BigDecimal.ZERO;
+		}
+		if (right == null) {
+			right = BigDecimal.ZERO;
+		}
 		return left.multiply(right);
 	}
 
@@ -314,6 +351,7 @@ public abstract class BigDecimalExtend {
 	 *
 	 * @param left  左边小数
 	 * @param right 右边8位整数
+	 *
 	 * @return 小数
 	 */
 	public static BigDecimal div(@This BigDecimal left, byte right) {
@@ -329,6 +367,7 @@ public abstract class BigDecimalExtend {
 	 *
 	 * @param left  左边小数
 	 * @param right 右边16位整数
+	 *
 	 * @return 小数
 	 */
 	public static BigDecimal div(@This BigDecimal left, short right) {
@@ -344,6 +383,7 @@ public abstract class BigDecimalExtend {
 	 *
 	 * @param left  左边小数
 	 * @param right 右边32位整数
+	 *
 	 * @return 小数
 	 */
 	public static BigDecimal div(@This BigDecimal left, int right) {
@@ -359,6 +399,7 @@ public abstract class BigDecimalExtend {
 	 *
 	 * @param left  左边小数
 	 * @param right 右边64位整数
+	 *
 	 * @return 小数
 	 */
 	public static BigDecimal div(@This BigDecimal left, long right) {
@@ -374,6 +415,7 @@ public abstract class BigDecimalExtend {
 	 *
 	 * @param left  左边小数
 	 * @param right 右边单精度浮点小数
+	 *
 	 * @return 小数
 	 */
 	public static BigDecimal div(@This BigDecimal left, float right) {
@@ -389,6 +431,7 @@ public abstract class BigDecimalExtend {
 	 *
 	 * @param left  左边小数
 	 * @param right 右边双精度浮点小数
+	 *
 	 * @return 小数
 	 */
 	public static BigDecimal div(@This BigDecimal left, double right) {
@@ -404,6 +447,7 @@ public abstract class BigDecimalExtend {
 	 *
 	 * @param left  左边小数
 	 * @param right 右边双精度浮点小数
+	 *
 	 * @return 小数
 	 */
 	public static BigDecimal div(@This BigDecimal left, BigDecimal right) {
@@ -423,6 +467,7 @@ public abstract class BigDecimalExtend {
 	 *
 	 * @param left  左边小数
 	 * @param right 右边8位整数
+	 *
 	 * @return 小数
 	 */
 	public static BigDecimal rem(@This BigDecimal left, byte right) {
@@ -435,6 +480,7 @@ public abstract class BigDecimalExtend {
 	 *
 	 * @param left  左边小数
 	 * @param right 右边16位整数
+	 *
 	 * @return 小数
 	 */
 	public static BigDecimal rem(@This BigDecimal left, short right) {
@@ -447,6 +493,7 @@ public abstract class BigDecimalExtend {
 	 *
 	 * @param left  左边小数
 	 * @param right 右边32位整数
+	 *
 	 * @return 小数
 	 */
 	public static BigDecimal rem(@This BigDecimal left, int right) {
@@ -459,6 +506,7 @@ public abstract class BigDecimalExtend {
 	 *
 	 * @param left  左边小数
 	 * @param right 右边64位整数
+	 *
 	 * @return 小数
 	 */
 	public static BigDecimal rem(@This BigDecimal left, long right) {
@@ -471,6 +519,7 @@ public abstract class BigDecimalExtend {
 	 *
 	 * @param left  左边小数
 	 * @param right 右边双精度浮点小数
+	 *
 	 * @return 小数
 	 */
 	public static BigDecimal rem(@This BigDecimal left, double right) {
@@ -483,6 +532,7 @@ public abstract class BigDecimalExtend {
 	 *
 	 * @param left  左边小数
 	 * @param right 右边单精度浮点小数
+	 *
 	 * @return 小数
 	 */
 	public static BigDecimal rem(@This BigDecimal left, float right) {
@@ -495,6 +545,7 @@ public abstract class BigDecimalExtend {
 	 *
 	 * @param left  左边小数
 	 * @param right 右边单精度浮点小数
+	 *
 	 * @return 小数
 	 */
 	public static BigDecimal rem(@This BigDecimal left, BigDecimal right) {
@@ -510,6 +561,7 @@ public abstract class BigDecimalExtend {
 	 * a++或++a
 	 *
 	 * @param left 左边小数
+	 *
 	 * @return 小数
 	 */
 	public static BigDecimal inc(@This BigDecimal left) {
@@ -521,6 +573,7 @@ public abstract class BigDecimalExtend {
 	 * a--或--a
 	 *
 	 * @param left 左边小数
+	 *
 	 * @return 小数
 	 */
 	public static BigDecimal dec(@This BigDecimal left) {
@@ -532,6 +585,7 @@ public abstract class BigDecimalExtend {
 	 * -a
 	 *
 	 * @param left 左边小数
+	 *
 	 * @return 小数
 	 */
 	public static BigDecimal unaryMinus(@This BigDecimal left) {
@@ -550,6 +604,7 @@ public abstract class BigDecimalExtend {
 	 * @param left  BigDecimal
 	 * @param right Byte
 	 * @param op    逻辑运算符
+	 *
 	 * @return boolean
 	 */
 	public static boolean compareToUsing(@This BigDecimal left, byte right, ComparableUsing.Operator op) {
@@ -570,6 +625,7 @@ public abstract class BigDecimalExtend {
 	 * @param left  BigDecimal
 	 * @param right Short
 	 * @param op    逻辑运算符
+	 *
 	 * @return boolean
 	 */
 	public static boolean compareToUsing(@This BigDecimal left, short right, ComparableUsing.Operator op) {
@@ -590,6 +646,7 @@ public abstract class BigDecimalExtend {
 	 * @param left  BigDecimal
 	 * @param right Integer
 	 * @param op    逻辑运算符
+	 *
 	 * @return boolean
 	 */
 	public static boolean compareToUsing(@This BigDecimal left, int right, ComparableUsing.Operator op) {
@@ -610,6 +667,7 @@ public abstract class BigDecimalExtend {
 	 * @param left  BigDecimal
 	 * @param right Long
 	 * @param op    逻辑运算符
+	 *
 	 * @return boolean
 	 */
 	public static boolean compareToUsing(@This BigDecimal left, long right, ComparableUsing.Operator op) {
@@ -630,6 +688,7 @@ public abstract class BigDecimalExtend {
 	 * @param left  BigDecimal
 	 * @param right Double
 	 * @param op    逻辑运算符
+	 *
 	 * @return boolean
 	 */
 	public static boolean compareToUsing(@This BigDecimal left, double right, ComparableUsing.Operator op) {
@@ -650,6 +709,7 @@ public abstract class BigDecimalExtend {
 	 * @param left  BigDecimal
 	 * @param right Float
 	 * @param op    逻辑运算符
+	 *
 	 * @return boolean
 	 */
 	public static boolean compareToUsing(@This BigDecimal left, float right, ComparableUsing.Operator op) {
@@ -670,6 +730,7 @@ public abstract class BigDecimalExtend {
 	 * @param left  BigDecimal
 	 * @param right Float
 	 * @param op    逻辑运算符
+	 *
 	 * @return boolean
 	 */
 	public static boolean compareToUsing(@This BigDecimal left, BigDecimal right, ComparableUsing.Operator op) {
