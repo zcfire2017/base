@@ -3,6 +3,7 @@ package com.base;
 import com.base.tools.log.LogHelper;
 import com.base.tools.string.StringBuilderUtils;
 import manifold.ext.props.rt.api.get;
+import manifold.ext.props.rt.api.var;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.Deserializer;
@@ -30,7 +31,7 @@ public class KafkaConfigUtil {
 	/**
 	 * 配置
 	 */
-	private KafkaProperties properties;
+	@var KafkaProperties properties;
 
 	/**
 	 * 生产者配置

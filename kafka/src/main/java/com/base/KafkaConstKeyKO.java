@@ -39,4 +39,9 @@ public class KafkaConstKeyKO<K, V> {
 	 * 值反序列化对象
 	 */
 	@var Deserializer<V> valueDeserializer;
+
+	/**
+	 * 是否已添加前缀
+	 */
+	@var Boolean isPrefix = false;
 }

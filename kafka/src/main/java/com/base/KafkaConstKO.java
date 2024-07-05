@@ -19,6 +19,6 @@ public class KafkaConstKO<V> extends KafkaConstKeyKO<String, V> {
 	 * @param valueDeserializer 值反序列化方式
 	 */
 	public KafkaConstKO(String topic, Serializer<V> valueSerializer, Deserializer<V> valueDeserializer) {
-		super(topic, new StringSerializer(), new StringDeserializer(), valueSerializer, valueDeserializer);
+		super(topic, new StringSerializer(), new StringDeserializer(), valueSerializer, valueDeserializer, false);
 	}
 }

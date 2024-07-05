@@ -40,6 +40,12 @@ public abstract class ABSKafkaKey<K, T> implements ApplicationRunner, IKafkaMess
 	 * @param kafkaInfo kafka信息
 	 */
 	protected void setKafka(KafkaConstKeyKO<K, T> kafkaInfo) {
+		//添加topic前缀
+		var topicPrefix = config.properties.properties.get("topic.prefix");
+		if (topicPrefix.isNotNullOrEmpty() && !kafkaInfo.isPrefix) {
+			kafkaInfo.topic = config.properties.properties.get("topic.prefix") + "-" + kafkaInfo.topic;
+			kafkaInfo.isPrefix = true;
+		}
 		this.kafkaInfo = kafkaInfo;
 	}
 
