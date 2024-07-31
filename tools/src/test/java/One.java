@@ -20,6 +20,9 @@ public class One {
 
 		var tree = list.tree(TestBO::getId, TestBO::getPId).getChildList(0);
 
+		var map = list.toMap(t -> t.getId());
+		var ts = map.where(w -> w.getKey() == 1).select(s -> s.getValue()).toList();
+
 		System.out.println(" ...");
 	}
 

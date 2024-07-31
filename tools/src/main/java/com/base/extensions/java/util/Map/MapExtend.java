@@ -69,6 +69,18 @@ public class MapExtend {
 
 	//region 实例方法扩展
 
+	/**
+	 * map是否不为空集合
+	 *
+	 * @param map 键值对集合
+	 * @param <K> 键类型
+	 * @param <V> 值类型
+	 * @return 是否不为空
+	 */
+	public static <K, V> boolean isNotEmpty(@This Map<K, V> map) {
+		return map != null && !map.isEmpty();
+	}
+
 	//region 层级获取值
 
 	/**

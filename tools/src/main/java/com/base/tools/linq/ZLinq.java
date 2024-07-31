@@ -315,6 +315,25 @@ public class ZLinq<T> {
 	}
 
 	/**
+	 * 生成有序Set集合
+	 *
+	 * @return Set集合
+	 */
+	public Set<T> toOrderSet() {
+		return stream.collect(Collectors.toCollection(LinkedHashSet::new));
+	}
+
+	/**
+	 * 生成Set集合
+	 *
+	 * @param predicate 过滤条件
+	 * @return Set集合
+	 */
+	public Set<T> toOrderSet(Predicate<T> predicate) {
+		return stream.filter(predicate).collect(Collectors.toCollection(LinkedHashSet::new));
+	}
+
+	/**
 	 * 转换成Map
 	 *
 	 * @param keyMapper   键
@@ -348,6 +367,42 @@ public class ZLinq<T> {
 	 */
 	public <R> Map<R, T> toMap(Function<T, R> keyMapper) {
 		return stream.collect(Collectors.toMap(keyMapper, Function.identity()));
+	}
+
+	/**
+	 * 转换成有序Map
+	 *
+	 * @param keyMapper   键
+	 * @param valueMapper 值
+	 * @param <R>         键对象
+	 * @return Map集合
+	 */
+	public <R, P> Map<R, P> toOrderMap(Function<T, R> keyMapper, Function<T, P> valueMapper) {
+		return stream.collect(Collectors.toMap(keyMapper, valueMapper, (k, v) -> v, LinkedHashMap::new));
+	}
+
+	/**
+	 * 转换成有序Map
+	 *
+	 * @param predicate   过滤条件
+	 * @param keyMapper   键
+	 * @param valueMapper 值
+	 * @param <R>         键对象
+	 * @return Map集合
+	 */
+	public <R, P> Map<R, P> toOrderMap(Predicate<T> predicate, Function<T, R> keyMapper, Function<T, P> valueMapper) {
+		return stream.filter(predicate).collect(Collectors.toMap(keyMapper, valueMapper, (k, v) -> v, LinkedHashMap::new));
+	}
+
+	/**
+	 * 转换成有序Map
+	 *
+	 * @param keyMapper 键
+	 * @param <R>       键对象
+	 * @return Map集合
+	 */
+	public <R> Map<R, T> toOrderMap(Function<T, R> keyMapper) {
+		return stream.collect(Collectors.toMap(keyMapper, Function.identity(), (k, v) -> v, LinkedHashMap::new));
 	}
 
 	//endregion
