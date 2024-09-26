@@ -36,6 +36,6 @@ public abstract class RedisSet<K, T> extends RedisABS<K, T> {
 	 * @return 键
 	 */
 	protected String getKey() {
-		return _keyPrefix;
+		return keyPrefix;
 	}
 }

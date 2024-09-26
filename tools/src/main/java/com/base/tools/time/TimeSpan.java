@@ -240,6 +240,40 @@ public class TimeSpan {
 
 	//endregion
 
+	//region 截取时间
+
+	/**
+	 * <p>截取小时</p>
+	 * （day * 24 + hour）
+	 *
+	 * @return 小时
+	 */
+	public long getCutHours() {
+		return day * 24L + hour;
+	}
+
+	/**
+	 * <p>截取分钟</p>
+	 * （day * 24L * 60 + hour * 60L + minute）
+	 *
+	 * @return 小时
+	 */
+	public long getCutMinutes() {
+		return day * 1440L + hour * 60L + minute;
+	}
+
+	/**
+	 * <p>截取秒</p>
+	 * （day * 24L * 60 + hour * 60L + minute）
+	 *
+	 * @return 小时
+	 */
+	public long getCutSeconds() {
+		return day * 86400L + hour * 3600L + minute * 60L + second;
+	}
+
+	//endregion
+
 	//region 运算符重载
 
 	/**

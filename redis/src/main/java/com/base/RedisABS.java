@@ -1,9 +1,12 @@
 package com.base;
 
+import lombok.Setter;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
+import java.util.Collection;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 
@@ -20,9 +23,16 @@ public abstract class RedisABS<K, T> {
 	protected final RedisTemplate<String, T> redisTemplate;
 
 	/**
+	 * 命名空间
+	 */
+	@Setter
+	protected String nameSpace = "";
+
+	/**
 	 * 键前缀
 	 */
-	protected String _keyPrefix = "";
+	@Setter
+	protected String keyPrefix = "";
 
 	/**
 	 * 构造方法
@@ -44,15 +54,6 @@ public abstract class RedisABS<K, T> {
 	}
 
 	/**
-	 * 设置key前缀
-	 *
-	 * @param keyPrefix key前缀
-	 */
-	protected void setKeyPrefix(String keyPrefix) {
-		this._keyPrefix = keyPrefix;
-	}
-
-	/**
 	 * 判断键是否存在
 	 *
 	 * @param key 键
@@ -69,16 +70,82 @@ public abstract class RedisABS<K, T> {
 	 * @return 键
 	 */
 	protected String getKey(K key) {
-		return _keyPrefix.isNullOrEmpty() ? key.toString() : _keyPrefix + "_" + key;
+		return getPrefix() + key;
 	}
 
 	/**
-	 * 移除键
+	 * 获取所有键
+	 *
+	 * @return 键集合
+	 */
+	protected Set<String> getAllKey() {
+		return redisTemplate.keys(getPrefix() + "*");
+	}
+
+	/**
+	 * 获取所有键
+	 *
+	 * @param key 模糊查询键
+	 * @return 键集合
+	 */
+	protected Set<String> getAllKey(String key) {
+		return redisTemplate.keys(key);
+	}
+
+	/**
+	 * 获取键前缀部分
+	 *
+	 * @return 键前缀
+	 */
+	protected String getPrefix() {
+		//命名空间
+		var space = nameSpace.isNullOrEmpty() ? "" : nameSpace + ":";
+		//前缀
+		var prefix = keyPrefix.isNullOrEmpty() ? "" : keyPrefix + "_";
+
+		return space + prefix;
+	}
+
+	/**
+	 * 删除键
 	 *
 	 * @param key 键
 	 */
 	public void delete(K key) {
 		redisTemplate.delete(getKey(key));
+	}
+
+	/**
+	 * 删除所有键
+	 */
+	protected void deleteAll() {
+		var keys = getAllKey();
+		if (keys.isNotEmpty()) {
+			redisTemplate.delete(keys);
+		}
+	}
+
+	/**
+	 * 删除所有键
+	 *
+	 * @param key 模糊key
+	 */
+	protected void deleteAll(String key) {
+		var keys = getAllKey(key);
+		if (keys.isNotEmpty()) {
+			redisTemplate.delete(keys);
+		}
+	}
+
+	/**
+	 * 删除键
+	 *
+	 * @param keys 键集合
+	 */
+	protected void delete(Collection<String> keys) {
+		if (keys.isNotEmpty()) {
+			redisTemplate.delete(keys);
+		}
 	}
 
 	/**
