@@ -9,6 +9,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.base.mapper.CommonMapper;
 import com.base.mapper.MyBaseMapper;
 import com.github.yulichang.wrapper.MPJLambdaWrapper;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.Serializable;
 import java.util.Collection;
@@ -156,6 +157,7 @@ public abstract class MyBaseServiceImpl<TMapper extends MyBaseMapper<TEntity>, T
 	 * @param entities 实体集合
 	 * @return 是否成功
 	 */
+	@Transactional
 	public boolean add(Collection<TEntity> entities) {
 		return this.saveBatch(entities);
 	}

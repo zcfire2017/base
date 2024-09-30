@@ -1,0 +1,56 @@
+spring:
+  main:
+    # 关闭banner打印
+    banner-mode: off
+    # 延迟加载
+    # lazy-initialization: true
+  profiles:
+    active: dev
+  servlet:
+    multipart:
+      # 单个文件大小为50MB
+      max-file-size: 30MB
+      # 总上传的数据大小50MB
+      max-request-size: 50MB
+  task:
+    execution:
+      pool:
+        core-size: 5
+        # 线程池维护线程的最少数量
+        max-size: 10
+        queue-capacity: 100
+
+
+# 系统日志设置
+logging:
+  level:
+    root: info
+    org.*: error
+    com.github.yulichang: error
+    com.alibaba.druid: error
+  # config: classpath:logback_main.xml
+
+mybatis-plus-join:
+  # 关闭banner打印
+  banner: false
+
+mybatis-plus:
+  mapper-locations: classpath*:com/*/*/profit_analysis/*.xml
+  #  configuration:
+  #    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  global-config:
+    # 关闭banner打印
+    banner: off
+
+server:
+  port: 12136
+  http2:
+    enabled: true
+# 30100 - 30200
+
+
+
+#mybatis-plus:
+#  mapper-locations: classpath*:/mapper/*.xml
+#  configuration:
+#    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl

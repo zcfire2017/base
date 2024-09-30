@@ -3,8 +3,6 @@ package com.base.file;
 import org.dromara.x.file.storage.core.FileInfo;
 import org.dromara.x.file.storage.core.FileStorageService;
 
-import java.io.File;
-
 /**
  * 云文件 抽象类
  */
@@ -26,23 +24,6 @@ public abstract class ABSCloudFile {
 	}
 
 	//region 上传文件
-
-	/**
-	 * 上传文件
-	 *
-	 * @param source 文件流
-	 */
-	protected FileInfo upload(Object source) {
-		if (source instanceof File) {
-
-		}
-		else if (source instanceof String) {
-
-		}
-		return storage.of(source).thumbnail(th -> {
-			th.scale(0.5f);
-		}).upload();
-	}
 
 	/**
 	 * 上传文件

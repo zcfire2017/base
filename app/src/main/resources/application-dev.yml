@@ -1,0 +1,11 @@
+spring:
+  # 数据源配置
+  datasource:
+    dynamic:
+      primary: kc_ocm_factory
+      datasource:
+        kc_ocm_factory:
+          driver-class-name: com.mysql.cj.jdbc.Driver
+          url: jdbc:mysql://192.168.111.77:3306/kc_ocm_factory?allowMultiQueries=true&useSSL=false&useUnicode=true&characterEncoding=utf8&serverTimezone=GMT%2B8&autoReconnect=true&rewriteBatchedStatements=TRUE&socketTimeout=600000
+          username: root
+          password: KC!6688

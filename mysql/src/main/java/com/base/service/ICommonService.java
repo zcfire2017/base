@@ -1,6 +1,7 @@
 package com.base.service;
 
 import cn.hutool.core.convert.Convert;
+import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
@@ -10,7 +11,6 @@ import com.base.mapper.CommonMapper;
 import com.base.tools.log.LogHelper;
 import com.base.tools.string.StringBuilderUtils;
 import com.base.tools.string.StringUtilsEx;
-import org.apache.commons.lang3.StringUtils;
 
 import java.lang.reflect.Field;
 import java.math.BigDecimal;
@@ -20,6 +20,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.*;
 import java.util.stream.Collectors;
+
 
 /**
  * 通用Service 不包含泛型实体
@@ -149,34 +150,34 @@ public interface ICommonService {
 			Field[] fields = clazz.getDeclaredFields();
 			for (Field field : fields) {
 				TableField annotation = field.getAnnotation(TableField.class);
-				if (annotation != null && !StringUtils.isBlank(annotation.value()) && annotation.exist()) {
+				if (annotation != null && !StrUtil.isBlank(annotation.value()) && annotation.exist()) {
 					field.setAccessible(true);
 					fieldMap.put(annotation.value(), field);
 				}
 				else {
 					TableId tableIdAnnotation = field.getAnnotation(TableId.class);
-					if (tableIdAnnotation != null && !StringUtils.isBlank(tableIdAnnotation.value()) && tableIdAnnotation.type() == IdType.NONE) {
+					if (tableIdAnnotation != null && !StrUtil.isBlank(tableIdAnnotation.value()) && tableIdAnnotation.type() == IdType.NONE) {
 						field.setAccessible(true);
 						fieldMap.put(tableIdAnnotation.value(), field);
 					}
 				}
 			}
-			if (fieldMap.size() <= 0)
+			if (fieldMap.isEmpty())
 				return result;
 
 			String tableName = tbName;
 			//region 表名
 
-			if (StringUtils.isBlank(tableName)) {
+			if (StrUtil.isBlank(tableName)) {
 				TableName annotation = clazz.getAnnotation(TableName.class);
-				if (annotation != null || !StringUtils.isBlank(annotation.value()))
+				if (annotation != null && !StrUtil.isBlank(annotation.value()))
 					tableName = annotation.value();
 			}
-			if (StringUtils.isBlank(tableName)) {
+			if (StrUtil.isBlank(tableName)) {
 				tableName = clazz.getSimpleName();
 			}
 			tableName = StringUtilsEx.toBackTick(tableName);
-			if (!StringUtils.isBlank(dbName)) {
+			if (!StrUtil.isBlank(dbName)) {
 				dbName = StringUtilsEx.toBackTick(dbName);
 				tableName = MessageFormat.format("{0}.{1}", dbName, tableName);
 			}
@@ -184,7 +185,7 @@ public interface ICommonService {
 			//endregion
 
 			String insertSqlColumn = MessageFormat.format("insert into {0} ({1})", tableName,
-					StringUtils.join(fieldMap.keySet().stream().map(StringUtilsEx::toBackTick).collect(Collectors.toList()), ","));
+					StrUtil.join(",", fieldMap.keySet().stream().map(StringUtilsEx::toBackTick).collect(Collectors.toList())));
 			//参数列表
 			Map<String, Object> parameters = new HashMap<>();
 			List<String> entityTermList = new ArrayList<>();
@@ -192,7 +193,7 @@ public interface ICommonService {
 				entityTermList.add(String.format(" #{%s%s} ", entry.getKey(), 0));
 				parameters.put(String.format("%s%s", entry.getKey(), 0), entry.getValue().get(entity));
 			}
-			String term = MessageFormat.format("({0}) ", StringUtils.join(entityTermList, ","));
+			String term = MessageFormat.format("({0}) ", StrUtil.join(",", entityTermList));
 
 			StringBuilderUtils sbSql = new StringBuilderUtils();
 			sbSql.appendLine(insertSqlColumn);
@@ -223,13 +224,13 @@ public interface ICommonService {
 		Field[] fields = clazz.getDeclaredFields();
 		for (Field field : fields) {
 			TableField annotation = field.getAnnotation(TableField.class);
-			if (annotation != null && !StringUtils.isBlank(annotation.value()) && annotation.exist()) {
+			if (annotation != null && !StrUtil.isBlank(annotation.value()) && annotation.exist()) {
 				field.setAccessible(true);
 				fieldMap.put(annotation.value(), field);
 			}
 			else {
 				TableId tableIdAnnotation = field.getAnnotation(TableId.class);
-				if (tableIdAnnotation != null && !StringUtils.isBlank(tableIdAnnotation.value()) && tableIdAnnotation.type() == IdType.NONE) {
+				if (tableIdAnnotation != null && !StrUtil.isBlank(tableIdAnnotation.value()) && tableIdAnnotation.type() == IdType.NONE) {
 					field.setAccessible(true);
 					fieldMap.put(tableIdAnnotation.value(), field);
 				}
@@ -239,7 +240,7 @@ public interface ICommonService {
 			return result;
 
 		String insertSqlColumn = MessageFormat.format("insert into {0} ({1})", tbName,
-				StringUtils.join(fieldMap.keySet().stream().map(StringUtilsEx::toBackTick).collect(Collectors.toList()), ","));
+				StrUtil.join(",", fieldMap.keySet().stream().map(StringUtilsEx::toBackTick).collect(Collectors.toList())));
 		//分页
 		int pageSize = 5000;
 		int pageCount = (int) Math.ceil(entityList.size() * 1.0 / pageSize);
@@ -259,13 +260,13 @@ public interface ICommonService {
 						entityTermList.add(String.format(" #{%s%s} ", entry.getKey(), index));
 						parameters.put(String.format("%s%s", entry.getKey(), index), entry.getValue().get(entity));
 					}
-					termList.add(MessageFormat.format("({0})", StringUtils.join(entityTermList, ",")));
+					termList.add(MessageFormat.format("({0})", StrUtil.join(",", entityTermList)));
 					index++;
 				}
 				StringBuilderUtils sbSql = new StringBuilderUtils();
 				sbSql.appendMessageFormatLine(insertSqlColumn);
 				sbSql.appendMessageFormatLine("values");
-				sbSql.appendMessageFormatLine(StringUtils.join(termList, "," + System.getProperty("line.separator")));
+				sbSql.appendMessageFormatLine(StrUtil.join("," + System.getProperty("line.separator"), termList));
 				int pageResult = this.execute(sbSql.toString(), parameters);
 				result += pageResult;
 			} catch (Exception e) {
@@ -309,7 +310,7 @@ public interface ICommonService {
 				//主键
 				TableId tableId = field.getAnnotation(TableId.class);
 				//有主键注解
-				if (tableId != null && StringUtils.isNotBlank(tableId.value())) {
+				if (tableId != null && StrUtil.isNotBlank(tableId.value())) {
 					main = tableId.value();
 					fieldMap.put(tableId.value(), fieldValue);
 					if (tableId.type() == IdType.AUTO)
@@ -322,7 +323,7 @@ public interface ICommonService {
 				TableField annotation = field.getAnnotation(TableField.class);
 				//注解存在，并且需要映射数据库字段，则使用注解名称
 				if (annotation != null) {
-					if (annotation.exist() && StringUtils.isNotBlank(annotation.value())) {
+					if (annotation.exist() && StrUtil.isNotBlank(annotation.value())) {
 						fieldMap.put(annotation.value(), fieldValue);
 					}
 				}
@@ -345,11 +346,11 @@ public interface ICommonService {
 			if (isAuto)
 				sql.appendFormatLine("alter table %s AUTO_INCREMENT = 1;", tableName);
 			sql.appendFormat("insert into %s (%s) values(", tableName,
-					StringUtils.join(fieldMap.keySet().stream().map(StringUtilsEx::toBackTick).collect(Collectors.toList()), ","));
+					StrUtil.join(",", fieldMap.keySet().stream().map(StringUtilsEx::toBackTick).collect(Collectors.toList())));
 			//数据库参数字段集合
-			List<String> columnList = new ArrayList<String>();
+			List<String> columnList = new ArrayList<>();
 			//更新字段集合
-			List<String> updateColumn = new ArrayList<String>();
+			List<String> updateColumn = new ArrayList<>();
 			//循环字段
 			for (Map.Entry<String, Object> file : fieldMap.entrySet()) {
 				//加入字段集合
@@ -360,7 +361,7 @@ public interface ICommonService {
 					updateColumn.add(MessageFormat.format("{0}=values({0})", StringUtilsEx.toBackTick(file.getKey())));
 			}
 			//拼接更新字段
-			sql.appendFormat("%s) on duplicate key update %s;", StringUtils.join(columnList, ","), StringUtils.join(updateColumn, ","));
+			sql.appendFormat("%s) on duplicate key update %s;", StrUtil.join(",", columnList), StrUtil.join(",", updateColumn));
 			//获取自增长ID，只有新增成功才会返回，其它都为0
 			result = this.execute(sql.toString(), parameterList);
 		} catch (Exception e) {
@@ -400,11 +401,11 @@ public interface ICommonService {
 			//表名
 			String tbName = tableName;
 			//优先传入表名，主要用于分表
-			if (StringUtils.isBlank(tbName)) {
+			if (StrUtil.isBlank(tbName)) {
 				//表名注解
 				TableName tableAnnotation = classt.getAnnotation(TableName.class);
 				//有表名注解，并且不为空
-				if (tableAnnotation != null && StringUtils.isNotBlank(tableAnnotation.value())) {
+				if (tableAnnotation != null && StrUtil.isNotBlank(tableAnnotation.value())) {
 					tbName = tableAnnotation.value();
 				}
 				else {
@@ -429,7 +430,7 @@ public interface ICommonService {
 				//主键
 				TableId tableId = field.getAnnotation(TableId.class);
 				//有主键注解
-				if (tableId != null && StringUtils.isNotBlank(tableId.value())) {
+				if (tableId != null && StrUtil.isNotBlank(tableId.value())) {
 					main = tableId.value();
 
 					if (tableId.type() == IdType.AUTO) {
@@ -444,7 +445,7 @@ public interface ICommonService {
 				TableField annotation = field.getAnnotation(TableField.class);
 				//注解存在，并且需要映射数据库字段，则使用注解名称
 				if (annotation != null) {
-					if (annotation.exist() && StringUtils.isNotBlank(annotation.value())) {
+					if (annotation.exist() && StrUtil.isNotBlank(annotation.value())) {
 						fieldMap.put(annotation.value(), field);
 					}
 				}
@@ -454,7 +455,7 @@ public interface ICommonService {
 				}
 			}
 			//无字段
-			if (fieldMap.size() <= 0) return result;
+			if (fieldMap.isEmpty()) return result;
 
 			//参数集合
 			var parameterList = new LinkedHashMap<String, Object>();
@@ -467,7 +468,7 @@ public interface ICommonService {
 			if (isAuto)
 				sql.appendFormatLine("alter table %s AUTO_INCREMENT = 1;", tbName);
 			sql.appendFormat("insert into %s (%s) values(", tbName,
-					StringUtils.join(fieldMap.keySet().stream().map(StringUtilsEx::toBackTick).collect(Collectors.toList()), ","));
+					StrUtil.join(",", fieldMap.keySet().stream().map(StringUtilsEx::toBackTick).collect(Collectors.toList())));
 
 			//循环实体集合
 			for (T entity : entityList) {
@@ -483,7 +484,7 @@ public interface ICommonService {
 					//写入参数集合
 					parameterList.put(String.format("%s%d", file.getKey(), index), file.getValue().get(entity));
 				}
-				sql.appendFormat("%s)", StringUtils.join(columnList, ","));
+				sql.appendFormat("%s)", StrUtil.join(",", columnList));
 			}
 			//更新字段集合
 			var updateColumn = new ArrayList<String>();
@@ -493,7 +494,7 @@ public interface ICommonService {
 					updateColumn.add(MessageFormat.format("{0}=values({0})", StringUtilsEx.toBackTick(file.getKey())));
 			}
 			//拼接字段
-			sql.appendFormat(" on duplicate key update %s;", StringUtils.join(updateColumn, ","));
+			sql.appendFormat(" on duplicate key update %s;", StrUtil.join(",", updateColumn));
 			//执行语句
 			result += this.execute(sql.toString(), parameterList);
 		} catch (Exception e) {
