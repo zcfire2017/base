@@ -199,7 +199,7 @@ public class TimeSpan {
 	 * @return 总天数
 	 */
 	public BigDecimal getTotalDays() {
-		return BigDecimal.valueOf(day + hour / 24f + minute / 1440f + second / 86400f + milli / 86400000f);
+		return BigDecimal.valueOf(day + hour / 24f + minute / 1440f);
 	}
 
 	/**
@@ -208,7 +208,7 @@ public class TimeSpan {
 	 * @return 总小时
 	 */
 	public BigDecimal getTotalHours() {
-		return BigDecimal.valueOf(day * 24 + hour + minute / 60f + second / 3600f + milli / 3600000f);
+		return BigDecimal.valueOf(day * 24 + hour + minute / 60f + second / 3600f);
 	}
 
 	/**

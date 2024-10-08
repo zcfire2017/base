@@ -19,12 +19,12 @@
 	</modules>
 
 	<properties>
-		<revision>1.0.10</revision>
+		<revision>1.1.0</revision>
 		<source.version>17</source.version>
 		<target.version>17</target.version>
 		<encoding>UTF-8</encoding>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<manifold.version>2024.1.32</manifold.version>
+		<manifold.version>2024.1.34</manifold.version>
 		<lombok.version>1.18.34</lombok.version>
 		<spring.version>6.1.12</spring.version>
 		<spring.boot.version>3.3.3</spring.boot.version>

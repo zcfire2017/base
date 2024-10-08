@@ -132,6 +132,15 @@ public abstract class MyBaseServiceImpl<TMapper extends MyBaseMapper<TEntity>, T
 	/**
 	 * 查询单个实体
 	 *
+	 * @return 单个实体
+	 */
+	public TEntity first() {
+		return this.baseMapper.selectOne(query.last(" limit 1 "));
+	}
+
+	/**
+	 * 查询单个实体
+	 *
 	 * @param wrapper 查询参数
 	 * @return 单个实体
 	 */
