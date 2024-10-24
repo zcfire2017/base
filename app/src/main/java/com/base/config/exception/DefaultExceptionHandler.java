@@ -74,6 +74,22 @@ public class DefaultExceptionHandler {
 		return APIResponse.fail(ErrorCodeEnum.BadRequest, message);
 	}
 
+	/**
+	 * 未找到资源错误处理
+	 *
+	 * @param e        错误信息
+	 * @param response 响应信息
+	 * @return 处理结果
+	 */
+	@ResponseBody
+	@ExceptionHandler(NoResourceFoundException.class)
+	public APIResponse<String> handle(NoResourceFoundException e, HttpServletResponse response) {
+		var message = "请求路径错误：" + e.getMessage();
+		//设置返回状态
+		response.setStatus(ErrorCodeEnum.NotFound.getValue());
+		//请求返回
+		return APIResponse.fail(ErrorCodeEnum.NotFound, message);
+	}
 
 	/**
 	 * 控制器错误处理

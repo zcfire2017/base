@@ -96,7 +96,7 @@ public class EnumCache {
 	 * @param <T>   枚举值类型
 	 * @return 枚举
 	 */
-	public static <T extends Number, E extends IEnum<T>> E value(Class<E> type, T value) {
+	public static <T, E extends IEnum<T>> E value(Class<E> type, T value) {
 		var map = valueMap(type);
 		if (map == null)
 			return null;
@@ -128,7 +128,7 @@ public class EnumCache {
 	 * @param name 枚举名称
 	 * @return 枚举值
 	 */
-	public static <T extends Number, E extends IEnum<T>> Object getValue(Class<E> type, String name) {
+	public static <T, E extends IEnum<T>> Object getValue(Class<E> type, String name) {
 		var map = nameMap(type);
 		if (map == null)
 			return null;

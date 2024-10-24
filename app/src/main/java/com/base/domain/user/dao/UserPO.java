@@ -56,7 +56,7 @@ public class UserPO {
 	 * 用户名
 	 */
 	@TableField("`name`")
-	private String name;
+	public String name;
 
 	/**
 	 * 用户性别

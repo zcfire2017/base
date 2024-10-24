@@ -1,7 +1,10 @@
 package com.base.mybatisPlus.core;
 
 import com.baomidou.mybatisplus.generator.AutoGenerator;
-import com.baomidou.mybatisplus.generator.config.*;
+import com.baomidou.mybatisplus.generator.config.DataSourceConfig;
+import com.baomidou.mybatisplus.generator.config.GlobalConfig;
+import com.baomidou.mybatisplus.generator.config.PackageConfig;
+import com.baomidou.mybatisplus.generator.config.StrategyConfig;
 import com.baomidou.mybatisplus.generator.config.converts.MySqlTypeConvert;
 import com.baomidou.mybatisplus.generator.config.querys.MySqlQuery;
 import com.baomidou.mybatisplus.generator.keywords.MySqlKeyWordsHandler;
@@ -121,20 +124,6 @@ public class MySQLBaseGeneratorTest {
 	}
 
 	/**
-	 * 模板配置
-	 * 启用或禁用模板
-	 * 启用或禁用功能
-	 */
-	protected static TemplateConfig templateConfig() {
-		return new TemplateConfig.Builder()
-				//禁用功能
-				.disable(TemplateType.XML, TemplateType.SERVICE, TemplateType.CONTROLLER)
-				//设置服务实现模板
-				.serviceImpl("templates/my_serviceImpl.java")
-				.build();
-	}
-
-	/**
 	 * 测试生成代码
 	 * 运行生成代码
 	 */
@@ -145,8 +134,6 @@ public class MySQLBaseGeneratorTest {
 				.global(globalConfig())
 				//包配置
 				.packageInfo(packageConfig())
-				//模板配置
-				.template(templateConfig())
 				//策略配置
 				.strategy(strategyConfig())
 				//执行

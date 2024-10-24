@@ -23,6 +23,11 @@ public abstract class RedisABS<K, T> {
 	protected final RedisTemplate<String, T> redisTemplate;
 
 	/**
+	 * 连接工厂
+	 */
+	protected final RedisConnectionFactory factory;
+
+	/**
 	 * 命名空间
 	 */
 	@Setter
@@ -41,6 +46,7 @@ public abstract class RedisABS<K, T> {
 	 * @param consumer 初始化redis模板
 	 */
 	protected RedisABS(RedisConnectionFactory factory, Consumer<RedisTemplate<String, T>> consumer) {
+		this.factory = factory;
 		//redis模板初始化
 		this.redisTemplate = new RedisTemplate<>();
 		//设置工厂

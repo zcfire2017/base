@@ -31,6 +31,7 @@
 		<maven-jar-plugin.version>3.4.2</maven-jar-plugin.version>
 		<maven-dependency-plugin.version>3.8.0</maven-dependency-plugin.version>
 		<slf4j.version>2.0.16</slf4j.version>
+		<expression.tree.version>1.4.6</expression.tree.version>
 	</properties>
 
 	<distributionManagement>
@@ -55,6 +56,8 @@
 					<encoding>${encoding}</encoding>
 					<skip>true</skip>
 					<compilerArgs>
+						<!-- Configure expression tree plugin-->
+						<arg>-Xplugin:ExpressionTree</arg>
 						<!-- Configure manifold plugin-->
 						<arg>-Xplugin:Manifold no-bootstrap</arg>
 						<arg>-implicit:class</arg>
@@ -62,26 +65,32 @@
 					</compilerArgs>
 					<!-- Add the processor path for the plugin -->
 					<annotationProcessorPaths>
+						<!-- 扩展属性和属性简洁开发 -->
 						<path>
-							<!-- 扩展属性和属性简洁开发 -->
 							<groupId>systems.manifold</groupId>
 							<artifactId>manifold-props</artifactId>
 							<version>${manifold.version}</version>
 						</path>
+						<!-- 内嵌字符串 -->
 						<path>
-							<!-- 内嵌字符串 -->
 							<groupId>systems.manifold</groupId>
 							<artifactId>manifold-strings</artifactId>
 							<version>${manifold.version}</version>
 						</path>
+						<!-- 元组 -->
 						<path>
-							<!-- 元组 -->
 							<groupId>systems.manifold</groupId>
 							<artifactId>manifold-tuple</artifactId>
 							<version>${manifold.version}</version>
 						</path>
+						<!-- 表达式树 -->
 						<path>
-							<!-- 支持注解 -->
+							<groupId>io.github.kiryu1223</groupId>
+							<artifactId>ExpressionTree</artifactId>
+							<version>${expression.tree.version}</version>
+						</path>
+						<!-- 支持注解 -->
+						<path>
 							<groupId>org.projectlombok</groupId>
 							<artifactId>lombok</artifactId>
 							<version>${lombok.version}</version>
