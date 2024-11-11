@@ -16,12 +16,12 @@ public class SettingConfig {
 	/**
 	 * 数据库名称
 	 */
-	private String databaseName;
+	private String databaseName = "";
 
 	/**
 	 * 文件存储地址
 	 */
-	private String filePath;
+	private String filePath = "";
 
 	/**
 	 * 是否使用调试模式

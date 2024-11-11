@@ -25,7 +25,7 @@ public abstract class MyBaseServiceImpl<TMapper extends MyBaseMapper<TEntity>, T
 	 */
 	@Override
 	public CommonMapper getCommonMapper() {
-		return this.baseMapper;
+		return this.getBaseMapper();
 	}
 
 	/**
@@ -61,7 +61,7 @@ public abstract class MyBaseServiceImpl<TMapper extends MyBaseMapper<TEntity>, T
 	 * @return 聚合查询对象
 	 */
 	public QueryChainWrapper<TEntity> getQueryChain() {
-		return new QueryChainWrapper<>(this.baseMapper);
+		return new QueryChainWrapper<>(this.getBaseMapper());
 	}
 
 	/**
@@ -81,7 +81,7 @@ public abstract class MyBaseServiceImpl<TMapper extends MyBaseMapper<TEntity>, T
 	 */
 	@Override
 	public boolean add(TEntity entity) {
-		return this.baseMapper.insert(entity) > 0;
+		return this.getBaseMapper().insert(entity) > 0;
 	}
 
 	/**
@@ -92,7 +92,7 @@ public abstract class MyBaseServiceImpl<TMapper extends MyBaseMapper<TEntity>, T
 	 */
 	@Override
 	public boolean update(TEntity tEntity) {
-		return this.baseMapper.updateById(tEntity) > 0;
+		return this.getBaseMapper().updateById(tEntity) > 0;
 	}
 
 	/**
@@ -103,7 +103,7 @@ public abstract class MyBaseServiceImpl<TMapper extends MyBaseMapper<TEntity>, T
 	 */
 	@Override
 	public boolean delete(Integer id) {
-		return this.baseMapper.deleteById(id) > 0;
+		return this.getBaseMapper().deleteById(id) > 0;
 	}
 
 	/**
@@ -115,7 +115,7 @@ public abstract class MyBaseServiceImpl<TMapper extends MyBaseMapper<TEntity>, T
 	@Override
 	public TEntity get(LambdaQueryWrapper<TEntity> wrapper) {
 		wrapper.last(" limit 1 ");
-		return this.baseMapper.selectOne(wrapper);
+		return this.getBaseMapper().selectOne(wrapper);
 	}
 
 	/**
@@ -126,7 +126,7 @@ public abstract class MyBaseServiceImpl<TMapper extends MyBaseMapper<TEntity>, T
 	 */
 	public TEntity first(LambdaQueryWrapper<TEntity> wrapper) {
 		wrapper.last(" limit 1 ");
-		return this.baseMapper.selectOne(wrapper);
+		return this.getBaseMapper().selectOne(wrapper);
 	}
 
 	/**
@@ -135,7 +135,7 @@ public abstract class MyBaseServiceImpl<TMapper extends MyBaseMapper<TEntity>, T
 	 * @return 单个实体
 	 */
 	public TEntity first() {
-		return this.baseMapper.selectOne(query.last(" limit 1 "));
+		return this.getBaseMapper().selectOne(query.last(" limit 1 "));
 	}
 
 	/**
@@ -146,7 +146,7 @@ public abstract class MyBaseServiceImpl<TMapper extends MyBaseMapper<TEntity>, T
 	 */
 	public TEntity first(MPJLambdaWrapper<TEntity> wrapper) {
 		wrapper.last(" limit 1 ");
-		return this.baseMapper.selectOne(wrapper);
+		return this.getBaseMapper().selectOne(wrapper);
 	}
 
 	/**
@@ -178,6 +178,6 @@ public abstract class MyBaseServiceImpl<TMapper extends MyBaseMapper<TEntity>, T
 	 * @return 实体
 	 */
 	public TEntity get(Serializable id) {
-		return this.baseMapper.selectById(id);
+		return this.getBaseMapper().selectById(id);
 	}
 }

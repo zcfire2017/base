@@ -29,6 +29,11 @@
 			<artifactId>ExpressionTree</artifactId>
 			<version>${expression.tree.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-oauth2-authorization-server</artifactId>
+			<version>1.3.2</version>
+		</dependency>
 	</dependencies>
 	<build>
 		<plugins>
