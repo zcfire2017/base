@@ -16,6 +16,7 @@
 		<module>redis</module>
 		<module>cloud-file</module>
 		<module>app</module>
+		<module>auth-feign</module>
 	</modules>
 
 	<properties>
