@@ -217,6 +217,27 @@ public class MapExtend {
 	}
 
 	/**
+	 * 获取map的值并转换为指定类型数据
+	 *
+	 * @param map       键值对集合
+	 * @param key       键
+	 * @param beanClass 返回类型
+	 * @param <K>       键类型
+	 * @param <V>       值类型
+	 * @param <R>       返回值类型
+	 * @return 返回值
+	 */
+	public static <K, V, R> List<R> getList(@This Map<K, V> map, K key, Class<R> beanClass) {
+		//获取值
+		var back = get(map, key);
+		if (back != null) {
+			//转换为指定类型
+			return Convert.toList(beanClass, back);
+		}
+		return null;
+	}
+
+	/**
 	 * 获取map的值并转换为制定类型数据
 	 *
 	 * @param map          键值对集合

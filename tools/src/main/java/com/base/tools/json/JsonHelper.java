@@ -10,6 +10,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.databind.type.CollectionType;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalTimeDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalTimeSerializer;
 
@@ -43,6 +44,8 @@ public class JsonHelper {
 		mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 		//忽略为空的对象
 		mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
+		//支持Duration
+		mapper.registerModule(new JavaTimeModule());
 
 		//序列化配置
 		var simpleModule = new SimpleModule();
@@ -69,7 +72,6 @@ public class JsonHelper {
 	 *
 	 * @param obj 对象
 	 * @param <T> 对象类型
-	 *
 	 * @return json字符串
 	 */
 	public static <T> String ser(T obj) {
@@ -89,7 +91,6 @@ public class JsonHelper {
 	 * @param jsonString json字符串
 	 * @param clazz      实体类型对象
 	 * @param <T>        实体类型
-	 *
 	 * @return 实体
 	 */
 	public static <T> T des(String jsonString, Class<T> clazz) {
@@ -109,7 +110,6 @@ public class JsonHelper {
 	 * @param jsonString    json字符串
 	 * @param typeReference 泛型类型
 	 * @param <T>           泛型类型
-	 *
 	 * @return 泛型对象
 	 */
 	public static <T> T des(String jsonString, TypeReference<T> typeReference) {
@@ -129,7 +129,6 @@ public class JsonHelper {
 	 * @param jsonString json字符串
 	 * @param clazz      实体类型对象
 	 * @param <T>        实体类型
-	 *
 	 * @return 实体集合
 	 */
 	public static <T> List<T> desList(String jsonString, Class<T> clazz) {
@@ -147,7 +146,6 @@ public class JsonHelper {
 	 *
 	 * @param jsonString json字符串
 	 * @param <T>        泛型类型
-	 *
 	 * @return map对象
 	 */
 	public static <T> T desMap(String jsonString) {
@@ -168,7 +166,6 @@ public class JsonHelper {
 	 * @param target   转换的对象类型
 	 * @param <T>      要转换的对象类型
 	 * @param <R>      转换对象的类型
-	 *
 	 * @return 转换后的对象
 	 */
 	public static <T, R> R convert(T original, Class<R> target) {
@@ -182,7 +179,6 @@ public class JsonHelper {
 	 * @param target   转换的对象类型
 	 * @param <T>      要转换的对象类型
 	 * @param <R>      转换对象的类型
-	 *
 	 * @return 转换后的对象
 	 */
 	public static <T, R> List<R> convert(List<T> original, Class<R> target) {
