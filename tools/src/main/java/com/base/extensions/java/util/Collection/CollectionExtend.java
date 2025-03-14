@@ -92,13 +92,16 @@ public class CollectionExtend {
 		return create(collection).select(mapper);
 	}
 
+
 	/**
 	 * 选择返回对象（泛型对象为集合）
 	 * <p>因为要泛型擦除，所以要把类传进来，垃圾java</p>
 	 *
 	 * @param collection 集合对象
+	 * @param clazz      返回实体对象
 	 * @param mapper     生成返回对象
 	 * @param <E>        集合实体对象
+	 * @param <T>        集合实体对象和<E>相同
 	 * @param <R>        返回实体对象
 	 * @return 集合操作对象
 	 */
@@ -116,18 +119,18 @@ public class CollectionExtend {
 	 * <p>因为要泛型擦除，所以这里只能使用 class::field 来获取</p>
 	 *
 	 * @param collection 集合对象
-	 * @param mapper     生成返回对象
+	 * @param clazz      返回实体对象
 	 * @param <E>        集合实体对象
-	 * @param <R>        返回实体对象
+	 * @param <T>        集合实体对象和<E>相同
 	 * @return 集合操作对象
 	 */
-	public static <E, R> ZLinq<R> selectMany(@This Collection<Collection<E>> collection, Function<E, R> mapper) {
+	public static <E extends Collection<T>, T> ZLinq<T> selectMany(@This Collection<E> collection, Class<T> clazz) {
 		//合并集合
-		var list = new ArrayList<E>();
+		var list = new ArrayList<T>();
 		for (var item : collection) {
 			list.addAll(item);
 		}
-		return create(list).select(mapper);
+		return create(list);
 	}
 
 	/**
